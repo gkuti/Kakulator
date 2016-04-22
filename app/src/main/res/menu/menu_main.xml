@@ -3,6 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.andela.gbolahan.kuti.myapplication.MainActivity">
     <item
+        android:id="@+id/action_renew"
+        android:orderInCategory="100"
+        android:title="Refresh"
+        android:icon="@drawable/ic_autorenew_white_24dp"
+        app:showAsAction="always" />
+    <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
         android:title="settings"
