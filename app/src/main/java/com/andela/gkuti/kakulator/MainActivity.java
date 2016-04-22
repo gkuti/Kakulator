@@ -12,7 +12,7 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     private Spinner spinner;
     private Button add, minus, times, equals, point, clear, divide;
     private TextView input, result;
@@ -21,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
     private String currency;
     private boolean continuedValue = false;
     private RateFetcher rateFetcher;
+    private String[] abbreviations;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,24 +77,24 @@ public class MainActivity extends AppCompatActivity {
         input.setText(input_Buffer.toString());
     }
 
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+        currency = abbreviations[i];
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+    }
+
     public void initializeSpinner() {
         String[] countries = getResources().getStringArray(R.array.Countries);
-        final String[] abbreviations = getResources().getStringArray(R.array.Abbreviations);
+        abbreviations = getResources().getStringArray(R.array.Abbreviations);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(MainActivity.this,
                 android.R.layout.simple_spinner_item, countries);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner = (Spinner) findViewById(R.id.spinner);
         spinner.setAdapter(adapter);
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                currency = abbreviations[i];
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-            }
-        });
+        spinner.setOnItemSelectedListener(this);
     }
 
 }
