@@ -9,7 +9,7 @@ import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
 
-public class SettingsAcitivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener,CompoundButton.OnCheckedChangeListener {
+public class SettingsAcitivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, CompoundButton.OnCheckedChangeListener {
     private SpinnerHelper spinner;
     private DataStore dataStore;
     private TextView textView;
@@ -32,6 +32,7 @@ public class SettingsAcitivity extends AppCompatActivity implements AdapterView.
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(this);
     }
+
     @Override
     public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
         if (checked) {
@@ -40,6 +41,7 @@ public class SettingsAcitivity extends AppCompatActivity implements AdapterView.
             dataStore.saveData("update", 1);
         }
     }
+
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         textView.setText(countries[i]);
@@ -57,19 +59,20 @@ public class SettingsAcitivity extends AppCompatActivity implements AdapterView.
 
     private void intializeComponents() {
         textView = (TextView) findViewById(R.id.settings_currency);
-        dataStore = new DataStore(this);
         countries = getResources().getStringArray(R.array.Countries);
         updateSwitch = (Switch) findViewById(R.id.switch1);
         updateSwitch.setOnCheckedChangeListener(this);
+        dataStore = new DataStore(this);
+        initializeSpinner();
+        setUserSettings();
+    }
+    private void setUserSettings(){
         int baseCurrency = dataStore.getData("baseCurrency");
         int update = dataStore.getData("update");
-        initializeSpinner();
         textView.setText(countries[baseCurrency]);
-        saveChanges(baseCurrency);
         if (update == 0) {
             this.updateSwitch.setChecked(true);
-        }
-        else {
+        } else {
             this.updateSwitch.setChecked(false);
         }
     }
