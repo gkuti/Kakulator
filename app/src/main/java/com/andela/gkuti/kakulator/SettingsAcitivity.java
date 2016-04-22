@@ -36,9 +36,9 @@ public class SettingsAcitivity extends AppCompatActivity implements AdapterView.
     @Override
     public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
         if (checked) {
-            dataStore.saveData("update", 1);
-        } else {
             dataStore.saveData("update", 0);
+        } else {
+            dataStore.saveData("update", 1);
         }
     }
     @Override
@@ -61,7 +61,18 @@ public class SettingsAcitivity extends AppCompatActivity implements AdapterView.
         dataStore = new DataStore(this);
         countries = getResources().getStringArray(R.array.Countries);
         updateSwitch = (Switch) findViewById(R.id.switch1);
+        updateSwitch.setOnCheckedChangeListener(this);
+        int baseCurrency = dataStore.getData("baseCurrency");
+        int update = dataStore.getData("update");
         initializeSpinner();
+        textView.setText(countries[baseCurrency]);
+        saveChanges(baseCurrency);
+        if (update == 0) {
+            this.updateSwitch.setChecked(true);
+        }
+        else {
+            this.updateSwitch.setChecked(false);
+        }
     }
 }
 
