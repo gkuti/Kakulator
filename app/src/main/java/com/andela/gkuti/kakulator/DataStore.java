@@ -15,4 +15,8 @@ public class DataStore {
         editor.putFloat(key, value);
         editor.commit();
     }
+    public void saveData(String key, int value){
+        editor.putInt(key, value);
+        editor.commit();
+    }
 }
