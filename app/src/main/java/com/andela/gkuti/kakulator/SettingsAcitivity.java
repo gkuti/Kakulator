@@ -10,13 +10,12 @@ import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 
-public class SettingsAcitivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+public class SettingsAcitivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener,CompoundButton.OnCheckedChangeListener {
     private Spinner spinner;
-    private String newBaseCurrency, baseCurrency;
     private DataStore dataStore;
     private TextView textView;
     private String[] countries;
-    private Switch update;
+    private Switch updateSwitch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +33,14 @@ public class SettingsAcitivity extends AppCompatActivity implements AdapterView.
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(this);
     }
-
+    @Override
+    public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
+        if (checked) {
+            dataStore.saveData("update", 1);
+        } else {
+            dataStore.saveData("update", 0);
+        }
+    }
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         textView.setText(countries[i]);
@@ -54,6 +60,7 @@ public class SettingsAcitivity extends AppCompatActivity implements AdapterView.
         textView = (TextView) findViewById(R.id.settings_currency);
         dataStore = new DataStore(this);
         countries = getResources().getStringArray(R.array.Countries);
+        updateSwitch = (Switch) findViewById(R.id.switch1);
         initializeSpinner();
     }
 }
