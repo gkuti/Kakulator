@@ -46,6 +46,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             startActivity(intent);
             return true;
         }
+        if (id == R.id.action_renew) {
+            new RateFetcher(this).execute();
+            return true;
+        }
         return super.onOptionsItemSelected(item);
     }
 
