@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             input_Buffer.append(textView.getText());
         }
         valueString += textView.getText();
-        input.setText(input_Buffer.toString());
+        displayText();
     }
 
     @Override
@@ -99,6 +99,12 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         spinner = (Spinner) findViewById(R.id.spinner);
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(this);
+    }
+    public void displayText() {
+        input.setText(input_Buffer.toString());
+        if (input.getLineCount() == 2) {
+            input.setTextSize(20);
+        }
     }
 
 }
