@@ -17,11 +17,14 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private Button add, minus, times, equals, point, clear, divide;
     private TextView input, result;
     private StringBuffer input_Buffer;
-    private String valueString = "";
-    private String currency;
-    private boolean continuedValue = false;
+    private String valueString = "", lastResult = "";
+    private String currency, operation;
+    private boolean continuedValue = false, previousCalculations = false;
     private RateFetcher rateFetcher;
     private String[] abbreviations;
+    private Double value, exchangedValue, finalResult = 0.0;
+    private boolean calculations = false, firstOperation = true, pendingOperation = false;
+    private DataStore dataStore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +70,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         input_Buffer = new StringBuffer();
         rateFetcher = new RateFetcher(this);
         currency = "USD";
+        dataStore = new DataStore(this);
     }
 
     public void numClick(View view) {
@@ -78,7 +82,45 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             input_Buffer.append(textView.getText());
         }
         valueString += textView.getText();
+        lastResult += textView.getText();
         displayText();
+    }
+
+    public void operationClick(View view) {
+        int viewId = view.getId();
+        switch (viewId) {
+            case R.id.operation_add:
+                setOperation("+");
+                displayOperation(operation);
+                break;
+            case R.id.operation_divide:
+                setOperation("/");
+                displayOperation(operation);
+                break;
+            case R.id.operation_minus:
+                setOperation("-");
+                displayOperation(operation);
+                break;
+            case R.id.operation_times:
+                setOperation("*");
+                displayOperation(operation);
+                break;
+            case R.id.operation_clear:
+                break;
+        }
+        parseValue();
+        if (viewId == R.id.operation_equals) {
+            result.setText(finalResult.toString());
+            lastResult = currency + finalResult.toString();
+        }
+    }
+
+    private void parseValue() {
+        if (!valueString.equals("")) {
+            value = Double.parseDouble(valueString);
+            exchangedValue = value / Double.valueOf(dataStore.getRateData(currency));
+        }
+
     }
 
     @Override
@@ -100,6 +142,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(this);
     }
+
     public void displayText() {
         input.setText(input_Buffer.toString());
         if (input.getLineCount() == 2) {
@@ -107,4 +150,13 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         }
     }
 
+    private void displayOperation(String operation) {
+        if (!lastResult.equals("")) {
+            int indexOfLastChar = input_Buffer.length();
+            if (String.valueOf(input_Buffer.charAt(indexOfLastChar - 1)).equals(operation) == false) {
+                input_Buffer.append(" " + operation + " ");
+                displayText();
+            }
+        }
+    }
 }
