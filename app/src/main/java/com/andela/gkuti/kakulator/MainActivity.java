@@ -25,6 +25,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private Double value, exchangedValue, finalResult = 0.0;
     private boolean calculations = false, firstOperation = true, pendingOperation = false;
     private DataStore dataStore;
+    private boolean isInputEntered = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +76,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     public void numClick(View view) {
         TextView textView = (TextView) view;
+        isInputEntered = true;
         if (!continuedValue) {
             input_Buffer.append(currency + textView.getText());
             continuedValue = true;
@@ -167,6 +169,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         }
         restartOperation();
     }
+
     private void restartOperation() {
         previousCalculations = true;
         valueString = "";
@@ -187,12 +190,14 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     }
 
     private void displayOperation(String operation) {
-        if (!lastResult.equals("")) {
+        if (isInputEntered) {
             int indexOfLastChar = input_Buffer.length();
-            if (String.valueOf(input_Buffer.charAt(indexOfLastChar - 1)).equals(operation) == false) {
+            if (String.valueOf(input_Buffer.charAt(indexOfLastChar - 1)).equals(" ")) {
+                input_Buffer.replace(indexOfLastChar - 2, indexOfLastChar - 1, operation);
+            } else {
                 input_Buffer.append(" " + operation + " ");
-                displayText();
             }
+            displayText();
         }
     }
 }
