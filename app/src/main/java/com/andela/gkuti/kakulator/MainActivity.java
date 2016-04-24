@@ -119,6 +119,13 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         if (!valueString.equals("")) {
             value = Double.parseDouble(valueString);
             exchangedValue = value / Double.valueOf(dataStore.getRateData(currency));
+            if (firstOperation) {
+                finalResult = exchangedValue;
+                restartOperation();
+                firstOperation = false;
+            } else {
+                performLastOperation();
+            }
         }
 
     }
@@ -141,6 +148,35 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         spinner = (Spinner) findViewById(R.id.spinner);
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(this);
+    }
+
+    public void performLastOperation() {
+        switch (operation) {
+            case "+":
+                finalResult += exchangedValue;
+                break;
+            case "-":
+                finalResult -= exchangedValue;
+                break;
+            case "*":
+                finalResult *= exchangedValue;
+                break;
+            case "/":
+                finalResult /= exchangedValue;
+                break;
+        }
+        restartOperation();
+    }
+    private void restartOperation() {
+        previousCalculations = true;
+        valueString = "";
+        lastResult = "";
+    }
+
+    private void setOperation(String operation) {
+        this.operation = operation;
+        pendingOperation = true;
+        continuedValue = false;
     }
 
     public void displayText() {
