@@ -16,7 +16,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private Spinner spinner;
     private Button add, minus, times, equals, point, clear, divide;
     private TextView input, result;
-    private StringBuffer inputBuffer,expressionBuffer;
+    private StringBuffer inputBuffer, expressionBuffer;
     private String valueString = "", lastResult = "";
     private String currency, operation;
     private boolean continuedValue = false;
@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private Double value, exchangedValue, finalResult = 0.0;
     private boolean firstOperation = true;
     private DataStore dataStore;
-    private int baseCurrency;
+    private int baseCurrency, update;
     private boolean isInputEntered = false;
 
     @Override
@@ -33,7 +33,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initializeComponent();
-        rateFetcher.execute();
+        if (update == 0) {
+            rateFetcher.execute();
+        }
     }
 
     @Override
@@ -75,6 +77,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         currency = "USD";
         dataStore = new DataStore(this);
         baseCurrency = dataStore.getData("baseCurrency");
+        update = dataStore.getData("update");
     }
 
     public void numClick(View view) {
@@ -116,7 +119,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         }
         if (viewId == R.id.operation_equals) {
             finalResult = ExpressionEvaluator.evaluate(expressionBuffer.toString());
-            result.setText(String.valueOf(dataStore.getRateData(abbreviations[baseCurrency])*finalResult));
+            result.setText(String.valueOf(dataStore.getRateData(abbreviations[baseCurrency]) * finalResult));
             lastResult = currency + finalResult.toString();
             expressionBuffer = new StringBuffer();
             expressionBuffer.append(finalResult.toString());
