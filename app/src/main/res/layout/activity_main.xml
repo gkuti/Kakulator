@@ -15,7 +15,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="@drawable/input_design">
 
         <TextView
             android:layout_width="match_parent"
@@ -43,7 +44,8 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="2" >
+        android:layout_weight="2"
+        android:layout_marginLeft="4dp">
 
         <TextView
             android:layout_width="wrap_content"
@@ -71,7 +73,8 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:baselineAligned="false"
-        android:layout_weight="2">
+        android:layout_weight="2"
+        android:background="@color/colorPrimary">
 
         <LinearLayout
             android:orientation="vertical"
@@ -90,7 +93,7 @@
                     android:layout_height="fill_parent"
                     android:text="7"
                     android:id="@+id/num7"
-                    android:theme="@style/MyButton"
+                    android:theme="@style/GreenButton"
                     android:textColor="@android:color/white"
                     android:textSize="25sp"
                     android:onClick="numClick"
@@ -102,7 +105,7 @@
                     android:layout_height="fill_parent"
                     android:text="8"
                     android:id="@+id/num8"
-                    android:theme="@style/MyButton"
+                    android:theme="@style/GreenButton"
                     android:textColor="@android:color/white"
                     android:textSize="25sp"
                     android:onClick="numClick"
@@ -114,7 +117,7 @@
                     android:layout_height="fill_parent"
                     android:text="9"
                     android:id="@+id/num9"
-                    android:theme="@style/MyButton"
+                    android:theme="@style/GreenButton"
                     android:textColor="@android:color/white"
                     android:textSize="25sp"
                     android:onClick="numClick"
@@ -134,7 +137,7 @@
                     android:layout_height="fill_parent"
                     android:text="4"
                     android:id="@+id/num4"
-                    android:theme="@style/MyButton"
+                    android:theme="@style/GreenButton"
                     android:textColor="@android:color/white"
                     android:textSize="25sp"
                     android:onClick="numClick"
@@ -146,7 +149,7 @@
                     android:layout_height="fill_parent"
                     android:text="5"
                     android:id="@+id/num5"
-                    android:theme="@style/MyButton"
+                    android:theme="@style/GreenButton"
                     android:textColor="@android:color/white"
                     android:textSize="25sp"
                     android:onClick="numClick"
@@ -158,7 +161,7 @@
                     android:layout_height="fill_parent"
                     android:text="6"
                     android:id="@+id/num6"
-                    android:theme="@style/MyButton"
+                    android:theme="@style/GreenButton"
                     android:textColor="@android:color/white"
                     android:textSize="25sp"
                     android:onClick="numClick"
@@ -178,7 +181,7 @@
                     android:layout_height="fill_parent"
                     android:text="1"
                     android:id="@+id/num1"
-                    android:theme="@style/MyButton"
+                    android:theme="@style/GreenButton"
                     android:textColor="@android:color/white"
                     android:textSize="25sp"
                     android:onClick="numClick"
@@ -190,7 +193,7 @@
                     android:layout_height="fill_parent"
                     android:text="2"
                     android:id="@+id/num2"
-                    android:theme="@style/MyButton"
+                    android:theme="@style/GreenButton"
                     android:textColor="@android:color/white"
                     android:textSize="25sp"
                     android:onClick="numClick"
@@ -202,7 +205,7 @@
                     android:layout_height="fill_parent"
                     android:text="3"
                     android:id="@+id/num3"
-                    android:theme="@style/MyButton"
+                    android:theme="@style/GreenButton"
                     android:textColor="@android:color/white"
                     android:textSize="25sp"
                     android:onClick="numClick"
@@ -222,7 +225,7 @@
                     android:layout_height="fill_parent"
                     android:text="."
                     android:id="@+id/operation_point"
-                    android:theme="@style/MyButton"
+                    android:theme="@style/GreenButton"
                     android:textColor="@android:color/white"
                     android:textSize="25sp"
                     android:onClick="numClick"
@@ -234,7 +237,7 @@
                     android:layout_height="fill_parent"
                     android:text="0"
                     android:id="@+id/num0"
-                    android:theme="@style/MyButton"
+                    android:theme="@style/GreenButton"
                     android:textColor="@android:color/white"
                     android:textSize="25sp"
                     android:onClick="numClick"
@@ -246,7 +249,7 @@
                     android:layout_height="fill_parent"
                     android:text="="
                     android:id="@+id/operation_equals"
-                    android:theme="@style/MyButton"
+                    android:theme="@style/GreenButton"
                     android:textColor="@android:color/white"
                     android:textSize="25sp"
                     android:onClick="operationClick"
@@ -266,12 +269,13 @@
             <Button
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:text="c"
+                android:text="CE"
                 android:id="@+id/operation_clear"
                 android:layout_weight="1"
                 android:onClick="operationClick"
                 android:textStyle="bold"
-                android:textSize="20dp" />
+                android:textSize="20dp"
+                android:theme="@style/WhiteButton" />
 
             <Button
                 android:layout_width="fill_parent"
@@ -281,7 +285,8 @@
                 android:layout_weight="1"
                 android:onClick="operationClick"
                 android:textStyle="bold"
-                android:textSize="20dp" />
+                android:textSize="20dp"
+                android:theme="@style/WhiteButton" />
 
             <Button
                 android:layout_width="fill_parent"
@@ -291,7 +296,8 @@
                 android:layout_weight="1"
                 android:onClick="operationClick"
                 android:textSize="20dp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:theme="@style/WhiteButton" />
 
             <Button
                 android:layout_width="fill_parent"
@@ -301,7 +307,8 @@
                 android:layout_weight="1"
                 android:onClick="operationClick"
                 android:textSize="20dp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:theme="@style/WhiteButton" />
 
             <Button
                 android:layout_width="fill_parent"
@@ -311,7 +318,8 @@
                 android:layout_weight="1"
                 android:onClick="operationClick"
                 android:textStyle="bold"
-                android:textSize="20dp" />
+                android:textSize="20dp"
+                android:theme="@style/WhiteButton" />
 
         </LinearLayout>
     </LinearLayout>
