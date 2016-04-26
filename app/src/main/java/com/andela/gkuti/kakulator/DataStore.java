@@ -18,6 +18,10 @@ public class DataStore {
         editor.commit();
     }
 
+    public float getRateData(String key) {
+        return sharedPreferences.getFloat(key, 0);
+    }
+
     public void saveData(String key, int value) {
         editor.putInt(key, value);
         editor.commit();
