@@ -57,6 +57,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             new RateFetcher(this).execute();
             return true;
         }
+        if (id == R.id.action_top_ten) {
+            Intent intent = new Intent(this, TopTenActivity.class);
+            startActivity(intent);
+        }
         return super.onOptionsItemSelected(item);
     }
 
