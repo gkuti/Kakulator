@@ -23,7 +23,7 @@
             android:parentActivityName=".MainActivity">
         </activity>
         <activity
-            android:name=".TopTen"
+            android:name=".TopTenActivity"
             android:label="@string/settings"
             android:parentActivityName=".MainActivity">
 
