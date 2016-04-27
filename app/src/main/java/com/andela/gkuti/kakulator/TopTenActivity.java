@@ -34,6 +34,10 @@ public class TopTenActivity extends AppCompatActivity {
         allRates = new ArrayList();
         requiredAbbreviation = new ArrayList<String>();
         currencyList = new ArrayList<Currency>();
+        for (String abbreviation : abbreviations) {
+            float rate = dataStore.getRateData(abbreviation);
+            allRates.add(rate);
+        }
 
     }
 
@@ -61,15 +65,17 @@ public class TopTenActivity extends AppCompatActivity {
         requiredCountry = new ArrayList();
         for (String abbreviation : requiredAbbreviation) {
             requiredCountry.add(getCountry(abbreviation));
-            prepareCurrency();
         }
+        prepareCurrency();
     }
+
     private void prepareCurrency() {
         for (int i = 0; i < 10; i++) {
             Currency currency = new Currency(requiredCountry.get(i), requiredAbbreviation.get(i), String.valueOf(requiredRate.get(i)));
             currencyList.add(currency);
         }
     }
+
     private String getCountry(String abbreviation) {
         String[] countries = getResources().getStringArray(R.array.Countries);
         for (int i = 0; i < countries.length; i++) {
@@ -79,6 +85,7 @@ public class TopTenActivity extends AppCompatActivity {
         }
         return null;
     }
+
     private void initializeView() {
         recyclerView = (RecyclerView) findViewById(R.id.top_ten);
         currencyAdapter = new CurrencyAdapter(currencyList);
