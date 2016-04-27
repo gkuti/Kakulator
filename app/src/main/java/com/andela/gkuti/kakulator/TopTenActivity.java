@@ -2,6 +2,8 @@ package com.andela.gkuti.kakulator;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -14,6 +16,8 @@ public class TopTenActivity extends AppCompatActivity {
     private ArrayList<Currency> currencyList;
     private ArrayList<Float> requiredRate;
     private ArrayList<String> requiredCountry;
+    private RecyclerView recyclerView;
+    private CurrencyAdapter currencyAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,6 +25,7 @@ public class TopTenActivity extends AppCompatActivity {
         setContentView(R.layout.activity_top_ten);
         intializeResource();
         createRequiredRate();
+        initializeView();
     }
 
     private void intializeResource() {
@@ -73,6 +78,12 @@ public class TopTenActivity extends AppCompatActivity {
             }
         }
         return null;
+    }
+    private void initializeView() {
+        recyclerView = (RecyclerView) findViewById(R.id.top_ten);
+        currencyAdapter = new CurrencyAdapter(currencyList);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(currencyAdapter);
     }
 
 }
