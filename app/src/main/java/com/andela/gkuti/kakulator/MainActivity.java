@@ -122,7 +122,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 break;
         }
         if (viewId == R.id.operation_equals) {
-            finalResult = ExpressionEvaluator.evaluate(expressionBuffer.toString());
+            if (isExpression(expressionBuffer.toString())) {
+                finalResult = ExpressionEvaluator.evaluate(expressionBuffer.toString());
+            }
             result.setText(String.valueOf(dataStore.getRateData(abbreviations[baseCurrency]) * finalResult));
             lastResult = currency + finalResult.toString();
             expressionBuffer = new StringBuffer();
@@ -212,5 +214,13 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             }
             displayText();
         }
+    }
+
+    private boolean isExpression(String buffer) {
+        String items[] = buffer.split(" ");
+        if (items.length > 3) {
+            return true;
+        }
+        return false;
     }
 }
