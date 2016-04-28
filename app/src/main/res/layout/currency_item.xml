@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal"
-    android:weightSum="1">
+    android:weightSum="1"
+    android:padding="10dp">
 
     <TextView
         android:layout_width="wrap_content"
@@ -11,9 +12,7 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="UNITED STATE DOLLAR"
         android:id="@+id/country"
-        android:layout_marginLeft="10dp"
         android:layout_gravity="center"
-        android:layout_marginTop="10dp"
         android:textStyle="bold"
         android:textSize="25dp" />
 
@@ -47,7 +46,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="NGN"
-        android:id="@+id/textView6"
+        android:id="@+id/base_currency"
         android:layout_below="@+id/country"
         android:layout_alignLeft="@+id/country"
         android:layout_alignStart="@+id/country"
@@ -61,8 +60,8 @@
         android:id="@+id/textView7"
         android:layout_gravity="center_vertical"
         android:layout_below="@+id/country"
-        android:layout_toRightOf="@+id/textView6"
-        android:layout_toEndOf="@+id/textView6"
+        android:layout_toRightOf="@+id/base_currency"
+        android:layout_toEndOf="@+id/base_currency"
         android:layout_marginLeft="1dp"
         android:textSize="20dp" />
 
