@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.andela.gkuti.kakulator">
+
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -17,8 +20,14 @@
         </activity>
         <activity
             android:name=".SettingsAcitivity"
-            android:parentActivityName=".MainActivity"
-            android:label="@string/settings">
+            android:label="@string/settings"
+            android:parentActivityName=".MainActivity">
+        </activity>
+        <activity
+            android:name=".TopTenActivity"
+            android:label="@string/settings"
+            android:parentActivityName=".MainActivity">
+
         </activity>
     </application>
 

@@ -1,6 +1,10 @@
 package com.andela.gkuti.kakulator;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.net.NetworkInfo.State;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -27,14 +31,20 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private DataStore dataStore;
     private int baseCurrency, update;
     private boolean isInputEntered = false;
+    private State mobile, wifi;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initializeComponent();
-        if (update == 0) {
-            rateFetcher.execute();
+        ConnectivityManager conMan = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        mobile = conMan.getNetworkInfo(0).getState();
+        wifi = conMan.getNetworkInfo(1).getState();
+        if (mobile == NetworkInfo.State.CONNECTED || wifi == NetworkInfo.State.CONNECTED) {
+            if (update == 0) {
+                rateFetcher.execute();
+            }
         }
     }
 
@@ -56,6 +66,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         if (id == R.id.action_renew) {
             new RateFetcher(this).execute();
             return true;
+        }
+        if (id == R.id.action_top_ten) {
+            Intent intent = new Intent(this, TopTenActivity.class);
+            startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
     }
@@ -118,7 +132,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 break;
         }
         if (viewId == R.id.operation_equals) {
-            finalResult = ExpressionEvaluator.evaluate(expressionBuffer.toString());
+            if (isExpression(expressionBuffer.toString())) {
+                finalResult = ExpressionEvaluator.evaluate(expressionBuffer.toString());
+            }
             result.setText(String.valueOf(dataStore.getRateData(abbreviations[baseCurrency]) * finalResult));
             lastResult = currency + finalResult.toString();
             expressionBuffer = new StringBuffer();
@@ -208,5 +224,13 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             }
             displayText();
         }
+    }
+
+    private boolean isExpression(String buffer) {
+        String items[] = buffer.split(" ");
+        if (items.length > 3) {
+            return true;
+        }
+        return false;
     }
 }

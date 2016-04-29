@@ -9,6 +9,12 @@
         android:icon="@drawable/ic_autorenew_white_24dp"
         app:showAsAction="always" />
     <item
+        android:id="@+id/action_top_ten"
+        android:orderInCategory="100"
+        android:title="Refresh"
+        android:icon="@drawable/ic_trending_up_white_24dp"
+        app:showAsAction="always" />
+    <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
         android:title="settings"
