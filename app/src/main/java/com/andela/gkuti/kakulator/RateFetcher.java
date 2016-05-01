@@ -60,6 +60,7 @@ public class RateFetcher extends AsyncTask<URL, String, String> {
 
     protected void onPostExecute(String result) {
         super.onPostExecute(result);
+        dataStore.saveData("appState",1);
         progressDialog.dismiss();
     }
 
