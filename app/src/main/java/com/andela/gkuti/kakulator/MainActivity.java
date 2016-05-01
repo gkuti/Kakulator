@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private int appState;
     private CoordinatorLayout coordinatorLayout;
     private DecimalFormat decimalFormat;
+    private float baseCurrencyValue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,6 +119,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         appState = dataStore.getData("appState");
         coordinatorLayout = (CoordinatorLayout) findViewById(R.id.calculator_layout);
         decimalFormat = new DecimalFormat("#.00");
+        baseCurrencyValue = dataStore.getRateData(abbreviations[baseCurrency]);
     }
 
     public void numClick(View view) {
@@ -161,7 +163,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             if (isExpression(expressionBuffer.toString())) {
                 finalResult = ExpressionEvaluator.evaluate(expressionBuffer.toString());
             }
-            result.setText(String.valueOf(decimalFormat.format(dataStore.getRateData(abbreviations[baseCurrency]) * finalResult)));
+            result.setText(String.valueOf(decimalFormat.format(finalResult * baseCurrencyValue)));
             lastResult = currency + finalResult.toString();
             expressionBuffer = new StringBuffer();
             expressionBuffer.append(finalResult.toString());
@@ -193,7 +195,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     public void onNothingSelected(AdapterView<?> adapterView) {
     }
 
-    public void initializeSpinner() {
+    private void initializeSpinner() {
         String[] countries = getResources().getStringArray(R.array.Countries);
         abbreviations = getResources().getStringArray(R.array.Abbreviations);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(MainActivity.this,
@@ -204,7 +206,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         spinner.setOnItemSelectedListener(this);
     }
 
-    public void performLastOperation() {
+    private void performLastOperation() {
         switch (operation) {
             case "+":
                 finalResult += exchangedValue;
@@ -236,6 +238,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         input.setText(inputBuffer.toString());
         if (input.getLineCount() == 2) {
             input.setTextSize(20);
+            input.setGravity(View.TEXT_ALIGNMENT_TEXT_START);
         }
     }
 

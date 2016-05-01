@@ -32,7 +32,8 @@
                 android:paddingRight="4dp"
                 android:text="0"
                 android:textSize="40sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:layout_marginLeft="4dp" />
 
             <TextView
                 android:id="@+id/tv_result"
