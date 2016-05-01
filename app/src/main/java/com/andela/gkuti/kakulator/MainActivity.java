@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.NetworkInfo.State;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -15,6 +17,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import java.text.DecimalFormat;
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     private Spinner spinner;
@@ -32,6 +36,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private int baseCurrency, update;
     private boolean isInputEntered = false;
     private State mobile, wifi;
+    private int appState;
+    private CoordinatorLayout coordinatorLayout;
+    private DecimalFormat decimalFormat;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +53,22 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 rateFetcher.execute();
             }
         }
+        else {
+            if(appState == 0){
+                displayError();
+            }
+        }
+    }
+
+    private void displayError() {
+        Snackbar snackbar = Snackbar.make(coordinatorLayout,"Oops! Convertion rates need to be Downloaded for the first time",Snackbar.LENGTH_INDEFINITE )
+                .setAction("EXIT", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        finish();
+                    }
+                });
+        snackbar.show();
     }
 
     @Override
@@ -59,7 +82,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         int id = item.getItemId();
 
         if (id == R.id.action_settings) {
-            Intent intent = new Intent(this, SettingsAcitivity.class);
+            Intent intent = new Intent(this, SettingsActivity.class);
             startActivity(intent);
             return true;
         }
@@ -92,6 +115,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         dataStore = new DataStore(this);
         baseCurrency = dataStore.getData("baseCurrency");
         update = dataStore.getData("update");
+        appState = dataStore.getData("appState");
+        coordinatorLayout = (CoordinatorLayout) findViewById(R.id.calculator_layout);
+        decimalFormat = new DecimalFormat("#.00");
     }
 
     public void numClick(View view) {
@@ -135,7 +161,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             if (isExpression(expressionBuffer.toString())) {
                 finalResult = ExpressionEvaluator.evaluate(expressionBuffer.toString());
             }
-            result.setText(String.valueOf(dataStore.getRateData(abbreviations[baseCurrency]) * finalResult));
+            result.setText(String.valueOf(decimalFormat.format(dataStore.getRateData(abbreviations[baseCurrency]) * finalResult)));
             lastResult = currency + finalResult.toString();
             expressionBuffer = new StringBuffer();
             expressionBuffer.append(finalResult.toString());
