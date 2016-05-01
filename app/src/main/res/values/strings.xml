@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Kakulator</string>
     <string name="settings">Settings</string>
+    <string name="top_ten">Top Ten</string>
     <array name="Countries">
         <item>UNITED STATES</item>
         <item>OMAN</item>

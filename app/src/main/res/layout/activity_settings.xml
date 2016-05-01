@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@android:color/white">
 
     <LinearLayout
         android:orientation="vertical"
@@ -56,9 +57,10 @@
             <Spinner
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/spinner2"
+                android:id="@+id/settings_spinner"
                 android:layout_weight="1"
-                android:paddingRight="8dp" />
+                android:paddingRight="8dp"
+                android:theme="@style/SpinnerStyle" />
 
         </LinearLayout>
     </LinearLayout>
