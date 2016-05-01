@@ -15,29 +15,27 @@ public class ExpressionEvaluator {
     }
 
     public static void reduce(ArrayList<String> express) {
-        simplify(express, "*");
-        simplify(result, "/");
-        simplify(result, "+");
-        simplify(result, "-");
+        simplify(express, "*", "/");
+        simplify(result, "+", "-");
     }
 
-    public static ArrayList<String> simplify(ArrayList<String> expression, String operator) {
+    public static ArrayList<String> simplify(ArrayList<String> expression, String operator1, String operator2) {
         ArrayList<String> newExpression = new ArrayList<>();
         int first = 0;
         Iterator<String> iterator = expression.iterator();
-        if (expression.contains(operator)) {
+        if (expression.contains(operator1) || expression.contains(operator2)) {
             while (iterator.hasNext()) {
                 String item = iterator.next();
-                if (item.equals(operator)) {
+                if (item.equals(operator1) || item.equals(operator2)) {
                     if (first == 0) {
                         int operatorIndex = expression.indexOf(item);
-                        double result = eval(expression, operatorIndex, operator, false);
+                        double result = eval(expression, operatorIndex, item, false);
                         if (operatorIndex > 2) {
                             if (expression.get(operatorIndex - 2).equals("-")) {
-                                result = eval(expression, operatorIndex, operator, true);
+                                result = eval(expression, operatorIndex, item, true);
                             }
                         }
-                        newExpression = generateExpression(newExpression, result, operator);
+                        newExpression = generateExpression(expression, newExpression, result, item, operatorIndex);
                         iterator.next();
                         first = 1;
                     } else {
@@ -48,8 +46,8 @@ public class ExpressionEvaluator {
                 }
             }
             result = newExpression;
-            if (newExpression.contains(operator)) {
-                simplify(newExpression, operator);
+            if (expression.contains(operator1) || expression.contains(operator2)) {
+                simplify(newExpression, operator1, operator2);
             } else {
                 return result;
             }
@@ -77,20 +75,30 @@ public class ExpressionEvaluator {
                 }
                 break;
             case "+":
-                result = operand1 + operand2;
+                if (negative) {
+                    result = -operand1 + operand2;
+                } else {
+                    result = operand1 + operand2;
+                }
                 break;
             case "-":
-                result = operand1 - operand2;
+                if (negative) {
+                    result = -operand1 - operand2;
+                } else {
+                    result = operand1 - operand2;
+                }
                 break;
         }
         return result;
     }
 
-    public static ArrayList<String> generateExpression(ArrayList<String> newExpression, double result, String operator) {
+    public static ArrayList<String> generateExpression(ArrayList<String> expression, ArrayList<String> newExpression, double result, String operator, int operatorIndex) {
         newExpression.remove(newExpression.size() - 1);
-        if (operator.equals("*") || operator.equals("/")) {
-            newExpression.remove(newExpression.size() - 1);
-            newExpression.add("+");
+        if (operatorIndex > 2) {
+            if (expression.get(operatorIndex - 2).equals("-")) {
+                newExpression.remove(newExpression.size() - 1);
+                newExpression.add("+");
+            }
         }
         newExpression.add(String.valueOf(result));
         return newExpression;
