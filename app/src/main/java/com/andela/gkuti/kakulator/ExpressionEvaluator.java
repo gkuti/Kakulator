@@ -14,12 +14,12 @@ public class ExpressionEvaluator {
         return Double.parseDouble(result.get(0));
     }
 
-    public static void reduce(ArrayList<String> express) {
+    private static void reduce(ArrayList<String> express) {
         simplify(express, "*", "/");
         simplify(result, "+", "-");
     }
 
-    public static ArrayList<String> simplify(ArrayList<String> expression, String operator1, String operator2) {
+    private static ArrayList<String> simplify(ArrayList<String> expression, String operator1, String operator2) {
         ArrayList<String> newExpression = new ArrayList<>();
         int first = 0;
         Iterator<String> iterator = expression.iterator();
@@ -57,7 +57,7 @@ public class ExpressionEvaluator {
         return null;
     }
 
-    public static double eval(ArrayList<String> expression, int operatorIndex, String operator, boolean negative) {
+    private static double eval(ArrayList<String> expression, int operatorIndex, String operator, boolean negative) {
         double result = 0;
         double operand1 = Double.parseDouble(expression.get(operatorIndex - 1));
         double operand2 = Double.parseDouble(expression.get(operatorIndex + 1));
@@ -92,7 +92,7 @@ public class ExpressionEvaluator {
         return result;
     }
 
-    public static ArrayList<String> generateExpression(ArrayList<String> expression, ArrayList<String> newExpression, double result, String operator, int operatorIndex) {
+    private static ArrayList<String> generateExpression(ArrayList<String> expression, ArrayList<String> newExpression, double result, String operator, int operatorIndex) {
         newExpression.remove(newExpression.size() - 1);
         if (operatorIndex > 2) {
             if (expression.get(operatorIndex - 2).equals("-")) {

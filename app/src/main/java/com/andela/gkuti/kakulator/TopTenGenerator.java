@@ -1,7 +1,6 @@
 package com.andela.gkuti.kakulator;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -84,7 +83,8 @@ public class TopTenGenerator {
         }
         return null;
     }
-    private void intializeValues(){
+
+    private void intializeValues() {
         abbreviations = context.getResources().getStringArray(R.array.Abbreviations);
         dataStore = new DataStore(context);
         allRates = new ArrayList();
