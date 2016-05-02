@@ -296,8 +296,8 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:onClick="operationClick"
-                    android:text="CE"
+                    android:onClick="allClear"
+                    android:text="AC"
                     android:textSize="20dp"
                     android:textStyle="bold"
                     android:theme="@style/WhiteButton" />

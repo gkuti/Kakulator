@@ -30,7 +30,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private Spinner spinner;
     private Button add, minus, times, equals, point, clear, divide;
     private TextView input, result;
-    private StringBuffer inputBuffer, expressionBuffer;
+    private StringBuffer inputBuffer;
+    private StringBuffer expressionBuffer;
     private String valueString = "", lastResult = "";
     private String currency, operator;
     private boolean continuedValue = false;
@@ -253,7 +254,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         } else {
             arithmeticCalculation();
         }
-        isInputEntered = false;
         expressionBuffer = new StringBuffer();
         expressionBuffer.append(finalResult.toString());
     }
@@ -312,5 +312,18 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private void arithmeticCalculation() {
         result.setText(String.valueOf(decimalFormat.format(finalResult)));
         lastResult = finalResult.toString();
+    }
+    public void allClear(View view){
+        inputBuffer = new StringBuffer();
+        input.setText("0");
+        result.setText("");
+        expressionBuffer = new StringBuffer();
+        lastResult = "";
+        valueString = "";
+        finalResult = 0.0;
+        continuedValue = false;
+        hasCurrency = false;
+        isInputEntered = false;
+        firstOperation = true;
     }
 }
