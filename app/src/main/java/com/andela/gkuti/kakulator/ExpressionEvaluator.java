@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 
 public class ExpressionEvaluator {
-    static ArrayList<String> result = new ArrayList<>();
+    public static ArrayList<String> result = new ArrayList<>();
 
     public static double evaluate(String buffer) {
         String items[] = buffer.split(" ");
@@ -15,28 +15,27 @@ public class ExpressionEvaluator {
     }
 
     public static void reduce(ArrayList<String> express) {
-        multiplyOperation(express);
+        simplify(express, "*", "/");
+        simplify(result, "+", "-");
     }
 
-    public static void multiplyOperation(ArrayList<String> expression) {
+    public static ArrayList<String> simplify(ArrayList<String> expression, String operator1, String operator2) {
         ArrayList<String> newExpression = new ArrayList<>();
         int first = 0;
         Iterator<String> iterator = expression.iterator();
-        if (expression.contains("*")) {
+        if (expression.contains(operator1) || expression.contains(operator2)) {
             while (iterator.hasNext()) {
                 String item = iterator.next();
-                if (item.equals("*")) {
+                if (item.equals(operator1) || item.equals(operator2)) {
                     if (first == 0) {
                         int operatorIndex = expression.indexOf(item);
-                        double result = eval(expression, operatorIndex, "*");
-                        if (operatorIndex > 3) {
+                        double result = eval(expression, operatorIndex, item, false);
+                        if (operatorIndex > 2) {
                             if (expression.get(operatorIndex - 2).equals("-")) {
-                                result = eval(expression, operatorIndex, "*") * -1;
-                                generateNegativeExpression(newExpression,result);
+                                result = eval(expression, operatorIndex, item, true);
                             }
-                        } else {
-                            newExpression = generateExpression(newExpression, result);
                         }
+                        newExpression = generateExpression(expression, newExpression, result, item, operatorIndex);
                         iterator.next();
                         first = 1;
                     } else {
@@ -46,147 +45,61 @@ public class ExpressionEvaluator {
                     newExpression.add(item);
                 }
             }
-            if (newExpression.contains("*")) {
-                multiplyOperation(newExpression);
+            result = newExpression;
+            if (expression.contains(operator1) || expression.contains(operator2)) {
+                simplify(newExpression, operator1, operator2);
             } else {
-                divisionOperation(newExpression);
+                return result;
             }
         } else {
-            divisionOperation(expression);
+            return expression;
         }
+        return null;
     }
 
-    public static void divisionOperation(ArrayList<String> expression) {
-        ArrayList<String> newExpression = new ArrayList<>();
-        int first = 0;
-        Iterator<String> iterator = expression.iterator();
-        if (expression.contains("/")) {
-            while (iterator.hasNext()) {
-                String item = iterator.next();
-                if (item.equals("/")) {
-                    if (first == 0) {
-                        int operatorIndex = expression.indexOf(item);
-                        double result = eval(expression, operatorIndex, "/");
-                        if (operatorIndex > 3) {
-                            if (expression.get(operatorIndex - 2).equals("-")) {
-                                result = eval(expression, operatorIndex, "/") * -1;
-                                generateNegativeExpression(newExpression, result);
-                            }
-                        } else {
-                            generateExpression(newExpression, result);
-                        }
-                        iterator.next();
-                        first = 1;
-                    } else {
-                        newExpression.add(item);
-                    }
-                } else {
-                    newExpression.add(item);
-                }
-            }
-            if (newExpression.contains("/")) {
-                divisionOperation(newExpression);
-            } else {
-                addOperation(newExpression);
-            }
-        } else {
-            addOperation(expression);
-        }
-    }
-
-    public static void substractOperation(ArrayList<String> expression) {
-        ArrayList<String> newExpression = new ArrayList<>();
-        int first = 0;
-        Iterator<String> iterator = expression.iterator();
-        if (expression.contains("-")) {
-            while (iterator.hasNext()) {
-                String item = iterator.next();
-                if (item.equals("-")) {
-                    if (first == 0) {
-                        int operatorIndex = expression.indexOf(item);
-                        double result = eval(expression, operatorIndex, "-");
-                        newExpression = generateExpression(newExpression, result);
-                        iterator.next();
-                        first = 1;
-                    } else {
-                        newExpression.add(item);
-                    }
-                } else {
-                    newExpression.add(item);
-                }
-            }
-            if (newExpression.contains("-")) {
-                substractOperation(newExpression);
-            } else {
-                result = newExpression;
-            }
-        } else {
-            result = expression;
-        }
-    }
-
-    public static void addOperation(ArrayList<String> expression) {
-        ArrayList<String> newExpression = new ArrayList<>();
-        int first = 0;
-        Iterator<String> iterator = expression.iterator();
-        if (expression.contains("+")) {
-            while (iterator.hasNext()) {
-                String item = iterator.next();
-                if (item.equals("+")) {
-                    if (first == 0) {
-                        int operatorIndex = expression.indexOf(item);
-                        double result = eval(expression, operatorIndex, "+");
-                        newExpression = generateExpression(newExpression, result);
-                        iterator.next();
-                        first = 1;
-                    } else {
-                        newExpression.add(item);
-                    }
-                } else {
-                    newExpression.add(item);
-                }
-            }
-            if (newExpression.contains("+")) {
-                addOperation(newExpression);
-            } else {
-                substractOperation(newExpression);
-            }
-        } else {
-            substractOperation(expression);
-        }
-    }
-
-    public static double eval(ArrayList<String> expression, int operatorIndex, String operator) {
+    public static double eval(ArrayList<String> expression, int operatorIndex, String operator, boolean negative) {
         double result = 0;
         double operand1 = Double.parseDouble(expression.get(operatorIndex - 1));
         double operand2 = Double.parseDouble(expression.get(operatorIndex + 1));
         switch (operator) {
             case "*":
                 result = operand1 * operand2;
+                if (negative) {
+                    result *= -1;
+                }
                 break;
             case "/":
                 result = operand1 / operand2;
+                if (negative) {
+                    result *= -1;
+                }
                 break;
             case "+":
-                result = operand1 + operand2;
+                if (negative) {
+                    result = -operand1 + operand2;
+                } else {
+                    result = operand1 + operand2;
+                }
                 break;
             case "-":
-                result = operand1 - operand2;
+                if (negative) {
+                    result = -operand1 - operand2;
+                } else {
+                    result = operand1 - operand2;
+                }
                 break;
         }
         return result;
     }
 
-    public static ArrayList generateNegativeExpression(ArrayList<String> newExpression, double result) {
+    public static ArrayList<String> generateExpression(ArrayList<String> expression, ArrayList<String> newExpression, double result, String operator, int operatorIndex) {
         newExpression.remove(newExpression.size() - 1);
-        newExpression.remove(newExpression.size() - 1);
-        newExpression.add("+");
-        newExpression.add(String.valueOf(result));
-        return newExpression;
-    }
-
-    public static ArrayList generateExpression(ArrayList<String> newExpression, double result) {
-        newExpression.remove(newExpression.size() - 1);
+        if (operatorIndex > 2) {
+            if (expression.get(operatorIndex - 2).equals("-")) {
+                newExpression.remove(newExpression.size() - 1);
+                newExpression.add("+");
+            }
+        }
         newExpression.add(String.valueOf(result));
         return newExpression;
     }

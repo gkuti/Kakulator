@@ -19,13 +19,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".SettingsAcitivity"
+            android:name=".SettingsActivity"
             android:label="@string/settings"
             android:parentActivityName=".MainActivity">
         </activity>
         <activity
             android:name=".TopTenActivity"
-            android:label="@string/settings"
+            android:label="@string/top_ten"
             android:parentActivityName=".MainActivity">
 
         </activity>

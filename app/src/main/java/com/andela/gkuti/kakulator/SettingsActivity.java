@@ -9,12 +9,13 @@ import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
 
-public class SettingsAcitivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, CompoundButton.OnCheckedChangeListener {
+public class SettingsActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, CompoundButton.OnCheckedChangeListener {
     private SpinnerHelper spinner;
     private DataStore dataStore;
     private TextView textView;
     private String[] countries;
     private Switch updateSwitch;
+    private int baseCurrency;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,12 +26,13 @@ public class SettingsAcitivity extends AppCompatActivity implements AdapterView.
 
     public void initializeSpinner() {
         final String[] abbreviations = getResources().getStringArray(R.array.Abbreviations);
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(SettingsAcitivity.this,
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(SettingsActivity.this,
                 android.R.layout.simple_spinner_item, countries);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner = new SpinnerHelper(findViewById(R.id.spinner2));
+        spinner = new SpinnerHelper(findViewById(R.id.settings_spinner));
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(this);
+        spinner.setSelection(baseCurrency);
     }
 
     @Override
@@ -63,11 +65,11 @@ public class SettingsAcitivity extends AppCompatActivity implements AdapterView.
         updateSwitch = (Switch) findViewById(R.id.switch1);
         updateSwitch.setOnCheckedChangeListener(this);
         dataStore = new DataStore(this);
-        initializeSpinner();
         setUserSettings();
+        initializeSpinner();
     }
     private void setUserSettings(){
-        int baseCurrency = dataStore.getData("baseCurrency");
+        baseCurrency = dataStore.getData("baseCurrency");
         int update = dataStore.getData("update");
         textView.setText(countries[baseCurrency]);
         if (update == 0) {
