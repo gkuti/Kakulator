@@ -47,7 +47,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private int appState;
     private CoordinatorLayout coordinatorLayout;
     private DecimalFormat decimalFormat;
-    private float baseCurrencyValue;
     private int mode = 1;
     private ImageButton modeButton;
     private boolean hasCurrency = false;
@@ -60,24 +59,24 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         checkNetwork();
     }
 
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        allClear();
-    }
-    public void allClear(){
-        inputBuffer = new StringBuffer();
-        input.setText("0");
-        result.setText("");
-        expressionBuffer = new StringBuffer();
-        lastResult = "";
-        valueString = "";
-        finalResult = 0.0;
-        continuedValue = false;
-        hasCurrency = false;
-        isInputEntered = false;
-        firstOperation = true;
-    }
+//    @Override
+//    protected void onRestart() {
+//        super.onRestart();
+//        allClear();
+//    }
+//    public void allClear(){
+//        inputBuffer = new StringBuffer();
+//        input.setText("0");
+//        result.setText("");
+//        expressionBuffer = new StringBuffer();
+//        lastResult = "";
+//        valueString = "";
+//        finalResult = 0.0;
+//        continuedValue = false;
+//        hasCurrency = false;
+//        isInputEntered = false;
+//        firstOperation = true;
+//    }
     private void initializeComponent() {
         initializeSpinner();
         add = (Button) findViewById(R.id.operation_add);
@@ -95,12 +94,11 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         rateFetcher = new RateFetcher(this);
         currency = "USD";
         dataStore = new DataStore(this);
-        int baseCurrency = dataStore.getData("baseCurrency");
         update = dataStore.getData("update");
         appState = dataStore.getData("appState");
         coordinatorLayout = (CoordinatorLayout) findViewById(R.id.calculator_layout);
         decimalFormat = new DecimalFormat("#.00");
-        baseCurrencyValue = dataStore.getRateData(abbreviations[baseCurrency]);
+
     }
 
     private void initializeSpinner() {
@@ -326,6 +324,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     }
 
     private void currencyCalculation() {
+        int baseCurrency = dataStore.getData("baseCurrency");
+        float baseCurrencyValue = dataStore.getRateData(abbreviations[baseCurrency]);
         result.setText(String.valueOf(decimalFormat.format(finalResult * baseCurrencyValue)));
         lastResult = currency + finalResult.toString();
     }
