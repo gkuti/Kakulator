@@ -1,9 +1,9 @@
 package com.andela.gkuti.kakulator;
 
+import com.andela.gkuti.kakulator.generator.ExpressionEvaluator;
+
 import org.junit.Before;
 import org.junit.Test;
-
-import java.util.ArrayList;
 
 import static org.junit.Assert.*;
 

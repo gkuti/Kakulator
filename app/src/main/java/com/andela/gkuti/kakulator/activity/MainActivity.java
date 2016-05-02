@@ -1,4 +1,4 @@
-package com.andela.gkuti.kakulator;
+package com.andela.gkuti.kakulator.activity;
 
 import android.content.Context;
 import android.content.Intent;
@@ -19,6 +19,11 @@ import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.andela.gkuti.kakulator.dal.DataStore;
+import com.andela.gkuti.kakulator.R;
+import com.andela.gkuti.kakulator.http.RateFetcher;
+import com.andela.gkuti.kakulator.generator.ExpressionEvaluator;
+
 import java.text.DecimalFormat;
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
@@ -27,16 +32,15 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private TextView input, result;
     private StringBuffer inputBuffer, expressionBuffer;
     private String valueString = "", lastResult = "";
-    private String currency, operation;
+    private String currency, operator;
     private boolean continuedValue = false;
     private RateFetcher rateFetcher;
     private String[] abbreviations;
-    private Double value, exchangedValue, finalResult = 0.0;
+    private Double exchangedValue, finalResult = 0.0;
     private boolean firstOperation = true;
     private DataStore dataStore;
-    private int baseCurrency, update;
+    private int update;
     private boolean isInputEntered = false;
-    private State mobile, wifi;
     private int appState;
     private CoordinatorLayout coordinatorLayout;
     private DecimalFormat decimalFormat;
@@ -50,9 +54,58 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initializeComponent();
+        checkNetwork();
+    }
+
+    private void initializeComponent() {
+        initializeSpinner();
+        add = (Button) findViewById(R.id.operation_add);
+        times = (Button) findViewById(R.id.operation_times);
+        minus = (Button) findViewById(R.id.operation_minus);
+        clear = (Button) findViewById(R.id.operation_clear);
+        point = (Button) findViewById(R.id.operation_point);
+        equals = (Button) findViewById(R.id.operation_equals);
+        divide = (Button) findViewById(R.id.operation_divide);
+        input = (TextView) findViewById(R.id.tv_input);
+        result = (TextView) findViewById(R.id.tv_result);
+        modeButton = (ImageButton) findViewById(R.id.change_mode);
+        inputBuffer = new StringBuffer();
+        expressionBuffer = new StringBuffer();
+        rateFetcher = new RateFetcher(this);
+        currency = "USD";
+        dataStore = new DataStore(this);
+        int baseCurrency = dataStore.getData("baseCurrency");
+        update = dataStore.getData("update");
+        appState = dataStore.getData("appState");
+        coordinatorLayout = (CoordinatorLayout) findViewById(R.id.calculator_layout);
+        decimalFormat = new DecimalFormat("#.00");
+        baseCurrencyValue = dataStore.getRateData(abbreviations[baseCurrency]);
+    }
+
+    private void initializeSpinner() {
+        String[] countries = getResources().getStringArray(R.array.Countries);
+        abbreviations = getResources().getStringArray(R.array.Abbreviations);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(MainActivity.this,
+                android.R.layout.simple_spinner_item, countries);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner = (Spinner) findViewById(R.id.spinner);
+        spinner.setAdapter(adapter);
+        spinner.setOnItemSelectedListener(this);
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+        currency = abbreviations[i];
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+    }
+
+    private void checkNetwork() {
         ConnectivityManager conMan = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        mobile = conMan.getNetworkInfo(0).getState();
-        wifi = conMan.getNetworkInfo(1).getState();
+        State mobile = conMan.getNetworkInfo(0).getState();
+        State wifi = conMan.getNetworkInfo(1).getState();
         if (mobile == NetworkInfo.State.CONNECTED || wifi == NetworkInfo.State.CONNECTED) {
             if (update == 0) {
                 rateFetcher.execute();
@@ -101,44 +154,29 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         return super.onOptionsItemSelected(item);
     }
 
-    private void initializeComponent() {
-        initializeSpinner();
-        add = (Button) findViewById(R.id.operation_add);
-        times = (Button) findViewById(R.id.operation_times);
-        minus = (Button) findViewById(R.id.operation_minus);
-        clear = (Button) findViewById(R.id.operation_clear);
-        point = (Button) findViewById(R.id.operation_point);
-        equals = (Button) findViewById(R.id.operation_equals);
-        divide = (Button) findViewById(R.id.operation_divide);
-        input = (TextView) findViewById(R.id.tv_input);
-        result = (TextView) findViewById(R.id.tv_result);
-        modeButton = (ImageButton) findViewById(R.id.change_mode);
-        inputBuffer = new StringBuffer();
-        expressionBuffer = new StringBuffer();
-        rateFetcher = new RateFetcher(this);
-        currency = "USD";
-        dataStore = new DataStore(this);
-        baseCurrency = dataStore.getData("baseCurrency");
-        update = dataStore.getData("update");
-        appState = dataStore.getData("appState");
-        coordinatorLayout = (CoordinatorLayout) findViewById(R.id.calculator_layout);
-        decimalFormat = new DecimalFormat("#.00");
-        baseCurrencyValue = dataStore.getRateData(abbreviations[baseCurrency]);
+    public void numClick(View view) {
+        if (R.id.operation_point != view.getId() || continuedValue) {
+            TextView textView = (TextView) view;
+            isInputEntered = true;
+            if (!continuedValue && mode == 1) {
+                inputBuffer.append(currency + textView.getText());
+                continuedValue = true;
+                hasCurrency = true;
+            } else {
+                inputBuffer.append(textView.getText());
+            }
+            valueString += textView.getText();
+            lastResult += textView.getText();
+            displayText();
+        }
     }
 
-    public void numClick(View view) {
-        TextView textView = (TextView) view;
-        isInputEntered = true;
-        if (!continuedValue && mode == 1) {
-            inputBuffer.append(currency + textView.getText());
-            continuedValue = true;
-            hasCurrency = true;
-        } else {
-            inputBuffer.append(textView.getText());
+    public void displayText() {
+        input.setText(inputBuffer.toString());
+        if (input.getLineCount() == 2) {
+            input.setTextSize(20);
+            input.setGravity(View.TEXT_ALIGNMENT_TEXT_START);
         }
-        valueString += textView.getText();
-        lastResult += textView.getText();
-        displayText();
     }
 
     public void operationClick(View view) {
@@ -146,41 +184,49 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         int viewId = view.getId();
         switch (viewId) {
             case R.id.operation_add:
-                setOperation("+");
-                displayOperation(operation);
+                setOperator("+");
+                displayOperation(operator);
                 break;
             case R.id.operation_divide:
-                setOperation("/");
-                displayOperation(operation);
+                setOperator("/");
+                displayOperation(operator);
                 break;
             case R.id.operation_minus:
-                setOperation("-");
-                displayOperation(operation);
+                setOperator("-");
+                displayOperation(operator);
                 break;
             case R.id.operation_times:
-                setOperation("*");
-                displayOperation(operation);
+                setOperator("*");
+                displayOperation(operator);
                 break;
             case R.id.operation_clear:
                 break;
         }
         if (viewId == R.id.operation_equals) {
-            if (isExpression(expressionBuffer.toString())) {
-                finalResult = ExpressionEvaluator.evaluate(expressionBuffer.toString());
-            }
-            if (hasCurrency) {
-                currencyCalculation();
+            performCalculation();
+        }
+    }
+    private void setOperator(String operator) {
+        this.operator = operator;
+        continuedValue = false;
+    }
+
+    private void displayOperation(String operation) {
+        if (isInputEntered) {
+            int indexOfLastChar = inputBuffer.length();
+            if (String.valueOf(inputBuffer.charAt(indexOfLastChar - 1)).equals(" ")) {
+                inputBuffer.replace(indexOfLastChar - 2, indexOfLastChar - 1, operation);
             } else {
-                arithmeticCalculation();
+                inputBuffer.append(" " + operation + " ");
+                expressionBuffer.append(" " + operation + " ");
             }
-            expressionBuffer = new StringBuffer();
-            expressionBuffer.append(finalResult.toString());
+            displayText();
         }
     }
 
     private void parseValue() {
         if (!valueString.equals("")) {
-            value = Double.parseDouble(valueString);
+            double value = Double.parseDouble(valueString);
             if (mode == 1) {
                 exchangedValue = (value / dataStore.getRateData(currency));
             } else {
@@ -198,28 +244,23 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     }
 
-    @Override
-    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-        currency = abbreviations[i];
+    private void performCalculation() {
+        if (isExpression(expressionBuffer.toString())) {
+            finalResult = ExpressionEvaluator.evaluate(expressionBuffer.toString());
+        }
+        if (hasCurrency) {
+            currencyCalculation();
+        } else {
+            arithmeticCalculation();
+        }
+        isInputEntered = false;
+        expressionBuffer = new StringBuffer();
+        expressionBuffer.append(finalResult.toString());
     }
 
-    @Override
-    public void onNothingSelected(AdapterView<?> adapterView) {
-    }
-
-    private void initializeSpinner() {
-        String[] countries = getResources().getStringArray(R.array.Countries);
-        abbreviations = getResources().getStringArray(R.array.Abbreviations);
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(MainActivity.this,
-                android.R.layout.simple_spinner_item, countries);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner = (Spinner) findViewById(R.id.spinner);
-        spinner.setAdapter(adapter);
-        spinner.setOnItemSelectedListener(this);
-    }
 
     private void performLastOperation() {
-        switch (operation) {
+        switch (operator) {
             case "+":
                 finalResult += exchangedValue;
                 break;
@@ -239,32 +280,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private void restartOperation() {
         valueString = "";
         lastResult = "";
-    }
-
-    private void setOperation(String operation) {
-        this.operation = operation;
-        continuedValue = false;
-    }
-
-    public void displayText() {
-        input.setText(inputBuffer.toString());
-        if (input.getLineCount() == 2) {
-            input.setTextSize(20);
-            input.setGravity(View.TEXT_ALIGNMENT_TEXT_START);
-        }
-    }
-
-    private void displayOperation(String operation) {
-        if (isInputEntered) {
-            int indexOfLastChar = inputBuffer.length();
-            if (String.valueOf(inputBuffer.charAt(indexOfLastChar - 1)).equals(" ")) {
-                inputBuffer.replace(indexOfLastChar - 2, indexOfLastChar - 1, operation);
-            } else {
-                inputBuffer.append(" " + operation + " ");
-                expressionBuffer.append(" " + operation + " ");
-            }
-            displayText();
-        }
     }
 
     private boolean isExpression(String buffer) {

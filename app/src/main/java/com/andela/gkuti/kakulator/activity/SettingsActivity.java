@@ -1,4 +1,4 @@
-package com.andela.gkuti.kakulator;
+package com.andela.gkuti.kakulator.activity;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -8,6 +8,10 @@ import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
+
+import com.andela.gkuti.kakulator.dal.DataStore;
+import com.andela.gkuti.kakulator.R;
+import com.andela.gkuti.kakulator.util.SpinnerHelper;
 
 public class SettingsActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, CompoundButton.OnCheckedChangeListener {
     private SpinnerHelper spinner;

@@ -1,10 +1,12 @@
-package com.andela.gkuti.kakulator;
+package com.andela.gkuti.kakulator.util;
 
 import android.content.Context;
 import android.graphics.Canvas;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.graphics.Paint;
+
+import com.andela.gkuti.kakulator.R;
 
 
 public class Decorator extends RecyclerView.ItemDecoration {

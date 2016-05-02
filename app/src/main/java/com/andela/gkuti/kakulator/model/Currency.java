@@ -1,4 +1,4 @@
-package com.andela.gkuti.kakulator;
+package com.andela.gkuti.kakulator.model;
 
 public class Currency {
     String country;

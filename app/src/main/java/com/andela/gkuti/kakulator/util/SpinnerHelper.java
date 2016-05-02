@@ -1,4 +1,4 @@
-package com.andela.gkuti.kakulator;
+package com.andela.gkuti.kakulator.util;
 
 import android.view.View;
 import android.widget.AdapterView;

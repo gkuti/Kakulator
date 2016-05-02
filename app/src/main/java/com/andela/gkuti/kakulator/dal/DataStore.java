@@ -1,8 +1,10 @@
-package com.andela.gkuti.kakulator;
+package com.andela.gkuti.kakulator.dal;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+
+import com.andela.gkuti.kakulator.util.Constants;
 
 public class DataStore {
     private SharedPreferences sharedPreferences;

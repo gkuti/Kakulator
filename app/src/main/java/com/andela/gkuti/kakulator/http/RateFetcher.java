@@ -1,9 +1,14 @@
-package com.andela.gkuti.kakulator;
+package com.andela.gkuti.kakulator.http;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
+
+import com.andela.gkuti.kakulator.R;
+import com.andela.gkuti.kakulator.dal.DataStore;
+import com.andela.gkuti.kakulator.util.Constants;
+
 import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.InputStream;

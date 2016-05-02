@@ -1,4 +1,4 @@
-package com.andela.gkuti.kakulator;
+package com.andela.gkuti.kakulator.generator;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -10,6 +10,9 @@ public class ExpressionEvaluator {
     public static double evaluate(String buffer) {
         String items[] = buffer.split(" ");
         ArrayList expression = new ArrayList<String>(Arrays.asList(items));
+        if (expression.size() % 2 == 0) {
+            expression.remove(expression.size() - 1);
+        }
         reduce(expression);
         return Double.parseDouble(result.get(0));
     }
@@ -52,7 +55,8 @@ public class ExpressionEvaluator {
                 return result;
             }
         } else {
-            return expression;
+            result = expression;
+            return result;
         }
         return null;
     }

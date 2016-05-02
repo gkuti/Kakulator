@@ -11,7 +11,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -19,14 +19,14 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".SettingsActivity"
+            android:name=".activity.SettingsActivity"
             android:label="@string/settings"
-            android:parentActivityName=".MainActivity">
+            android:parentActivityName=".activity.MainActivity">
         </activity>
         <activity
-            android:name=".TopTenActivity"
+            android:name=".activity.TopTenActivity"
             android:label="@string/top_ten"
-            android:parentActivityName=".MainActivity">
+            android:parentActivityName=".activity.MainActivity">
 
         </activity>
     </application>

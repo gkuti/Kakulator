@@ -1,9 +1,15 @@
-package com.andela.gkuti.kakulator;
+package com.andela.gkuti.kakulator.activity;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+
+import com.andela.gkuti.kakulator.model.Currency;
+import com.andela.gkuti.kakulator.adapter.CurrencyAdapter;
+import com.andela.gkuti.kakulator.R;
+import com.andela.gkuti.kakulator.generator.TopTenGenerator;
+import com.andela.gkuti.kakulator.util.Decorator;
 
 import java.util.ArrayList;
 

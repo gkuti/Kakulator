@@ -1,6 +1,10 @@
-package com.andela.gkuti.kakulator;
+package com.andela.gkuti.kakulator.generator;
 
 import android.content.Context;
+
+import com.andela.gkuti.kakulator.model.Currency;
+import com.andela.gkuti.kakulator.dal.DataStore;
+import com.andela.gkuti.kakulator.R;
 
 import java.util.ArrayList;
 import java.util.Collections;

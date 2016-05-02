@@ -2,6 +2,8 @@ package com.andela.gkuti.kakulator;
 
 import android.test.ActivityInstrumentationTestCase2;
 
+import com.andela.gkuti.kakulator.activity.MainActivity;
+
 import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
