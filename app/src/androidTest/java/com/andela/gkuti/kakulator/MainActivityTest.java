@@ -135,5 +135,22 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
         onView(withId(R.id.operation_equals)).perform(click());
         onView(withId(R.id.tv_result)).check(matches(withText("320.00")));
     }
+    public void testClearButton() throws Exception {
+        getActivity();
+        onView(withId(R.id.action_settings)).perform(click());
+        onView(withText("Settings")).check(matches(isDisplayed()));
+        onView(withId(R.id.settings_spinner)).perform(click());
+        onData(allOf(is(instanceOf(String.class)), is("UNITED STATES"))).perform(click());
+        onView(withId(R.id.settings_spinner)).check(matches(withSpinnerText(containsString("UNITED STATES"))));
+        onView(withContentDescription("Navigate up")).perform(click());
+        onView(withId(R.id.num7)).perform(click());
+        onView(withId(R.id.num3)).perform(click());
+        onView(withId(R.id.operation_minus)).perform(click());
+        onView(withId(R.id.num9)).perform(click());
+        onView(withText("USD73 - USD9")).check(matches(isDisplayed()));
+        onView(withId(R.id.operation_equals)).perform(click());
+        onView(withId(R.id.tv_result)).check(matches(withText("64.00")));
+    }
+
 
 }
