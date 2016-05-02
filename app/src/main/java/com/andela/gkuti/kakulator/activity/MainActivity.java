@@ -2,6 +2,8 @@ package com.andela.gkuti.kakulator.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.NetworkInfo.State;
@@ -58,6 +60,24 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         checkNetwork();
     }
 
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        allClear();
+    }
+    public void allClear(){
+        inputBuffer = new StringBuffer();
+        input.setText("0");
+        result.setText("");
+        expressionBuffer = new StringBuffer();
+        lastResult = "";
+        valueString = "";
+        finalResult = 0.0;
+        continuedValue = false;
+        hasCurrency = false;
+        isInputEntered = false;
+        firstOperation = true;
+    }
     private void initializeComponent() {
         initializeSpinner();
         add = (Button) findViewById(R.id.operation_add);
@@ -91,6 +111,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner = (Spinner) findViewById(R.id.spinner);
         spinner.setAdapter(adapter);
+        spinner.getBackground().setColorFilter((Color.WHITE), PorterDuff.Mode.SRC_ATOP);
         spinner.setOnItemSelectedListener(this);
     }
 
