@@ -46,7 +46,7 @@ public class RateFetcher extends AsyncTask<URL, String, String> {
 
     protected String doInBackground(URL... urls) {
         try {
-            url = new URL("http://openexchangerates.org/api/latest.json?app_id=a4c2366df7e347a4a5b5d0594bb8e41f");
+            url = new URL(Constants.API_URL.getValue()+Constants.APP_TOKEN.getValue());
             connection = (HttpURLConnection) url.openConnection();
             connection.connect();
             stream = connection.getInputStream();

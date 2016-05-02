@@ -9,7 +9,7 @@ public class DataStore {
     Editor editor;
 
     public DataStore(Context context) {
-        sharedPreferences = context.getSharedPreferences("Kakulator", 0);
+        sharedPreferences = context.getSharedPreferences(Constants.DATA_FILENAME.getValue(), 0);
         editor = sharedPreferences.edit();
     }
 
