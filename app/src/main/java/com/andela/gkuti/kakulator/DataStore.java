@@ -5,8 +5,8 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 
 public class DataStore {
-    SharedPreferences sharedPreferences;
-    Editor editor;
+    private SharedPreferences sharedPreferences;
+    private Editor editor;
 
     public DataStore(Context context) {
         sharedPreferences = context.getSharedPreferences(Constants.DATA_FILENAME.getValue(), 0);

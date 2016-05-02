@@ -14,7 +14,7 @@ public class ExpressionEvaluator {
         return Double.parseDouble(result.get(0));
     }
 
-    public static void reduce(ArrayList<String> express) {
+    private static void reduce(ArrayList<String> express) {
         simplify(express, "*", "/");
         simplify(result, "+", "-");
     }
