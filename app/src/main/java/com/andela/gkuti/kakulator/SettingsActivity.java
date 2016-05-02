@@ -15,6 +15,7 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
     private TextView textView;
     private String[] countries;
     private Switch updateSwitch;
+    private int baseCurrency;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +32,7 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
         spinner = new SpinnerHelper(findViewById(R.id.settings_spinner));
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(this);
+        spinner.setSelection(baseCurrency);
     }
 
     @Override
@@ -63,11 +65,11 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
         updateSwitch = (Switch) findViewById(R.id.switch1);
         updateSwitch.setOnCheckedChangeListener(this);
         dataStore = new DataStore(this);
-        initializeSpinner();
         setUserSettings();
+        initializeSpinner();
     }
     private void setUserSettings(){
-        int baseCurrency = dataStore.getData("baseCurrency");
+        baseCurrency = dataStore.getData("baseCurrency");
         int update = dataStore.getData("update");
         textView.setText(countries[baseCurrency]);
         if (update == 0) {
