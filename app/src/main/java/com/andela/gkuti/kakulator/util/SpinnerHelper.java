@@ -1,4 +1,4 @@
-package com.andela.gkuti.kakulator;
+package com.andela.gkuti.kakulator.util;
 
 import android.view.View;
 import android.widget.AdapterView;
@@ -6,6 +6,9 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 
+/**
+ * SpinnerHelper class
+ */
 public class SpinnerHelper implements OnItemSelectedListener {
     private final Spinner spinner;
 
