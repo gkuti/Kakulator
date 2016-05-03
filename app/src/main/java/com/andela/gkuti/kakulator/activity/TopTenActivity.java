@@ -13,12 +13,20 @@ import com.andela.gkuti.kakulator.util.Decorator;
 
 import java.util.ArrayList;
 
+/**
+ * TopTenActivity class
+ */
 public class TopTenActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private CurrencyAdapter currencyAdapter;
     private ArrayList<Currency> currencyList;
     private TopTenGenerator topTenGenerator;
 
+    /**
+     * method called when the activity is started
+     *
+     * @param
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,6 +34,10 @@ public class TopTenActivity extends AppCompatActivity {
         topTenGenerator = new TopTenGenerator(this);
         initializeView();
     }
+
+    /**
+     * method initializes the recycler view and display the top ten currency
+     */
     private void initializeView() {
         currencyList = topTenGenerator.getTopTen();
         recyclerView = (RecyclerView) findViewById(R.id.top_ten);

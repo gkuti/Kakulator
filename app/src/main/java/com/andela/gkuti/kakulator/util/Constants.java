@@ -1,5 +1,8 @@
 package com.andela.gkuti.kakulator.util;
 
+/**
+ * Constants enum
+ */
 public enum Constants {
 
     API_URL("http://openexchangerates.org/api/latest.json?"),

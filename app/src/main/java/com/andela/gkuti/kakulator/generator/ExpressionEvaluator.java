@@ -4,9 +4,18 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 
+/**
+ * ExpressionEvaluator class
+ */
 public class ExpressionEvaluator {
     public static ArrayList<String> result = new ArrayList<>();
 
+    /**
+     * Return the result of the expression specified
+     *
+     * @param buffer the String of expression
+     * @return double value of the result
+     */
     public static double evaluate(String buffer) {
         String items[] = buffer.split(" ");
         ArrayList expression = new ArrayList<String>(Arrays.asList(items));
@@ -17,11 +26,24 @@ public class ExpressionEvaluator {
         return Double.parseDouble(result.get(0));
     }
 
+    /**
+     * reduces the expression
+     *
+     * @param express the expression to be reduced
+     */
     private static void reduce(ArrayList<String> express) {
         simplify(express, "*", "/");
         simplify(result, "+", "-");
     }
 
+    /**
+     * method simplifies an expression containing the operator passed
+     *
+     * @param expression the expression to be simplified
+     * @param operator1  the first String operator
+     * @param operator2  the second String operator
+     * @return ArrayList of a simplified expression
+     */
     private static ArrayList<String> simplify(ArrayList<String> expression, String operator1, String operator2) {
         ArrayList<String> newExpression = new ArrayList<>();
         int first = 0;
@@ -38,7 +60,7 @@ public class ExpressionEvaluator {
                                 result = eval(expression, operatorIndex, item, true);
                             }
                         }
-                        newExpression = generateExpression(expression, newExpression, result, item, operatorIndex);
+                        newExpression = generateExpression(expression, newExpression, result, operatorIndex);
                         iterator.next();
                         first = 1;
                     } else {
@@ -61,6 +83,15 @@ public class ExpressionEvaluator {
         return null;
     }
 
+    /**
+     * the method evaluate a given expression
+     *
+     * @param expression the expression to be evaluated
+     * @param operatorIndex the index of the operator
+     * @param operator the operator of the operation to be performed
+     * @param negative check whether the result should return a negative value
+     * @return double value of the result
+     */
     private static double eval(ArrayList<String> expression, int operatorIndex, String operator, boolean negative) {
         double result = 0;
         double operand1 = Double.parseDouble(expression.get(operatorIndex - 1));
@@ -96,7 +127,15 @@ public class ExpressionEvaluator {
         return result;
     }
 
-    private static ArrayList<String> generateExpression(ArrayList<String> expression, ArrayList<String> newExpression, double result, String operator, int operatorIndex) {
+    /**
+     * Generates a new expression after calculations
+     * @param expression list to pick values from
+     * @param newExpression list to add new values
+     * @param result result of the last calculation to add to the expression
+     * @param operatorIndex index of operator
+     * @return
+     */
+    private static ArrayList<String> generateExpression(ArrayList<String> expression, ArrayList<String> newExpression, double result, int operatorIndex) {
         newExpression.remove(newExpression.size() - 1);
         if (operatorIndex > 2) {
             if (expression.get(operatorIndex - 2).equals("-")) {

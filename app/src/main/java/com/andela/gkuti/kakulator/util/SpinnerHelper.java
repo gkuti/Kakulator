@@ -6,6 +6,9 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 
+/**
+ * SpinnerHelper class
+ */
 public class SpinnerHelper implements OnItemSelectedListener {
     private final Spinner spinner;
 

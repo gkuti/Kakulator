@@ -13,6 +13,9 @@ import com.andela.gkuti.kakulator.dal.DataStore;
 import com.andela.gkuti.kakulator.R;
 import com.andela.gkuti.kakulator.util.SpinnerHelper;
 
+/**
+ * SettingsActivity class
+ */
 public class SettingsActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, CompoundButton.OnCheckedChangeListener {
     private SpinnerHelper spinner;
     private DataStore dataStore;
@@ -21,6 +24,11 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
     private Switch updateSwitch;
     private int baseCurrency;
 
+    /**
+     * method called when the activity is started
+     *
+     * @param
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,6 +36,9 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
         intializeComponents();
     }
 
+    /**
+     * called to initialize spinner and set data source for its adapter
+     */
     public void initializeSpinner() {
         final String[] abbreviations = getResources().getStringArray(R.array.Abbreviations);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(SettingsActivity.this,
@@ -39,6 +50,12 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
         spinner.setSelection(baseCurrency);
     }
 
+    /**
+     * method triggered when a check action happen on the switch
+     *
+     * @param compoundButton the switch that was checked
+     * @param checked        the boolean value for the switch
+     */
     @Override
     public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
         if (checked) {
@@ -48,21 +65,35 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
         }
     }
 
+    /**
+     * called when a new item has been selected from the spinner
+     */
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         textView.setText(countries[i]);
         saveChanges(i);
     }
 
+    /**
+     * actions to carry out when no item was selected can be done here
+     */
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
 
     }
 
+    /**
+     * method to save user base currency to the data store
+     *
+     * @param currency the currency selected by the user
+     */
     private void saveChanges(int currency) {
         dataStore.saveData("baseCurrency", currency);
     }
 
+    /**
+     * called to instantiate fields
+     */
     private void intializeComponents() {
         textView = (TextView) findViewById(R.id.settings_currency);
         countries = getResources().getStringArray(R.array.Countries);
@@ -72,7 +103,11 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
         setUserSettings();
         initializeSpinner();
     }
-    private void setUserSettings(){
+
+    /**
+     * method to save user settings
+     */
+    private void setUserSettings() {
         baseCurrency = dataStore.getData("baseCurrency");
         int update = dataStore.getData("update");
         textView.setText(countries[baseCurrency]);

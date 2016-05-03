@@ -1,10 +1,16 @@
 package com.andela.gkuti.kakulator.model;
 
+/**
+ * Currency class
+ */
 public class Currency {
     String country;
     String abbreviation;
     String rate;
 
+    /**
+     * Constructor for the Currency class
+     */
     public Currency(String country, String abbreviation, String rate) {
         this.country = country;
         this.abbreviation = abbreviation;

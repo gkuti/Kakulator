@@ -28,6 +28,9 @@ import com.andela.gkuti.kakulator.generator.ExpressionEvaluator;
 
 import java.text.DecimalFormat;
 
+/**
+ * MainActivity class
+ */
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     private Spinner spinner;
     private Button add, minus, times, equals, point, clear, divide;
@@ -51,6 +54,11 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private ImageButton modeButton;
     private boolean hasCurrency = false;
 
+    /**
+     * method called when the activity is started
+     *
+     * @param
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,24 +67,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         checkNetwork();
     }
 
-//    @Override
-//    protected void onRestart() {
-//        super.onRestart();
-//        allClear();
-//    }
-//    public void allClear(){
-//        inputBuffer = new StringBuffer();
-//        input.setText("0");
-//        result.setText("");
-//        expressionBuffer = new StringBuffer();
-//        lastResult = "";
-//        valueString = "";
-//        finalResult = 0.0;
-//        continuedValue = false;
-//        hasCurrency = false;
-//        isInputEntered = false;
-//        firstOperation = true;
-//    }
+    /**
+     * called to instantiate fields
+     */
     private void initializeComponent() {
         initializeSpinner();
         add = (Button) findViewById(R.id.operation_add);
@@ -101,6 +94,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     }
 
+    /**
+     * called to initialize spinner and set data source for its adapter
+     */
     private void initializeSpinner() {
         String[] countries = getResources().getStringArray(R.array.Countries);
         abbreviations = getResources().getStringArray(R.array.Abbreviations);
@@ -113,15 +109,24 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         spinner.setOnItemSelectedListener(this);
     }
 
+    /**
+     * called when a new item has been selected from the spinner
+     */
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         currency = abbreviations[i];
     }
 
+    /**
+     * actions to carry out when no item was selected can be done here
+     */
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
     }
 
+    /**
+     * checks network status and displays an error if data service is off and you are launching app for the first time
+     */
     private void checkNetwork() {
         ConnectivityManager conMan = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         State mobile = conMan.getNetworkInfo(0).getState();
@@ -137,8 +142,12 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         }
     }
 
+    /**
+     * displays an error in form of a Snackbar when called
+     */
     private void displayError() {
-        Snackbar snackbar = Snackbar.make(coordinatorLayout, "Oops! Convertion rates need to be Downloaded for the first time", Snackbar.LENGTH_INDEFINITE)
+        String errorMessage = "Oops! Convertion rates need to be Downloaded for the first time";
+        Snackbar snackbar = Snackbar.make(coordinatorLayout, errorMessage, Snackbar.LENGTH_INDEFINITE)
                 .setAction("EXIT", new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -148,12 +157,18 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         snackbar.show();
     }
 
+    /**
+     * method for inflating menu from xml to java object
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
+    /**
+     * method that handles click event of icons on the action bar
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -174,6 +189,11 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * method that handles number clicks and displays it on screen
+     *
+     * @param view the button that triggers the event
+     */
     public void numClick(View view) {
         if (R.id.operation_point != view.getId() || continuedValue) {
             TextView textView = (TextView) view;
@@ -191,6 +211,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         }
     }
 
+    /**
+     * method that displays input on screen
+     */
     public void displayText() {
         input.setText(inputBuffer.toString());
         if (input.getLineCount() == 2) {
@@ -199,6 +222,11 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         }
     }
 
+    /**
+     * method that handles operation button clicks
+     *
+     * @param view the button that triggers the event
+     */
     public void operationClick(View view) {
         parseValue();
         int viewId = view.getId();
@@ -226,11 +254,22 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             performCalculation();
         }
     }
+
+    /**
+     * sets the operator to the specified operator passed
+     *
+     * @param operator the operator to set
+     */
     private void setOperator(String operator) {
         this.operator = operator;
         continuedValue = false;
     }
 
+    /**
+     * displays the operator clicked by the user
+     *
+     * @param operation the operator to be displayed
+     */
     private void displayOperation(String operation) {
         if (isInputEntered) {
             int indexOfLastChar = inputBuffer.length();
@@ -244,6 +283,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         }
     }
 
+    /**
+     * method converts strings values from input to double and exchanged its rate
+     */
     private void parseValue() {
         if (!valueString.equals("")) {
             double value = Double.parseDouble(valueString);
@@ -264,6 +306,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     }
 
+    /**
+     * method to perform calculations from user input
+     */
     private void performCalculation() {
         if (isExpression(expressionBuffer.toString())) {
             finalResult = ExpressionEvaluator.evaluate(expressionBuffer.toString());
@@ -277,7 +322,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         expressionBuffer.append(finalResult.toString());
     }
 
-
+    /**
+     * method to perform the last operation the user does entered before the equal sign
+     */
     private void performLastOperation() {
         switch (operator) {
             case "+":
@@ -296,11 +343,20 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         restartOperation();
     }
 
+    /**
+     * method clears input after the equal sign was click
+     */
     private void restartOperation() {
         valueString = "";
         lastResult = "";
     }
 
+    /**
+     * checks if the user the buffer for the input is an expression
+     *
+     * @param buffer the buffer input to check
+     * @return returns false otherwise true when the it is an expression
+     */
     private boolean isExpression(String buffer) {
         String items[] = buffer.split(" ");
         if (items.length > 3) {
@@ -309,6 +365,11 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         return false;
     }
 
+    /**
+     * method that handles change mode button clicks
+     *
+     * @param view the button that triggers the event
+     */
     public void changeMode(View view) {
         if (mode == 1) {
             times.setEnabled(true);
@@ -323,6 +384,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         }
     }
 
+    /**
+     * method used for calculation involving currency
+     */
     private void currencyCalculation() {
         int baseCurrency = dataStore.getData("baseCurrency");
         float baseCurrencyValue = dataStore.getRateData(abbreviations[baseCurrency]);
@@ -330,11 +394,20 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         lastResult = currency + finalResult.toString();
     }
 
+    /**
+     * method used for calculation involving arithmetic only
+     */
     private void arithmeticCalculation() {
         result.setText(String.valueOf(decimalFormat.format(finalResult)));
         lastResult = finalResult.toString();
     }
-    public void allClear(View view){
+
+    /**
+     * method clears all input and re-instantiate fields when all clear button is clicked
+     *
+     * @param view the button that triggers the event
+     */
+    public void allClear(View view) {
         inputBuffer = new StringBuffer();
         input.setText("0");
         result.setText("");

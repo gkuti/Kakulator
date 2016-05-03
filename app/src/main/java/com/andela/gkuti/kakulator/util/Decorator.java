@@ -8,11 +8,16 @@ import android.graphics.Paint;
 
 import com.andela.gkuti.kakulator.R;
 
-
+/**
+ * Decorator class
+ */
 public class Decorator extends RecyclerView.ItemDecoration {
 
     private Context context;
 
+    /**
+     * Constructor for Decorator class
+     */
     public Decorator(Context context) {
         this.context = context;
     }
