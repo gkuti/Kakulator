@@ -12,7 +12,7 @@ Kakulator is an application that allows users to perform arithmetic calculation 
 ==============
 
 
-![SCREENSHOT](https://github.com/andela-gkuti/Checkpoint-three/blob/develop/asset/main.png?raw=true)
+![SCREENSHOT](https://github.com/andela-gkuti/Checkpoint-three/blob/develop/asset/Main.png?raw=true)
 ![SCREENSHOT](https://github.com/andela-gkuti/Checkpoint-three/blob/develop/asset/settings.png?raw=true)
 ![SCREENSHOT](https://github.com/andela-gkuti/Checkpoint-three/blob/develop/asset/topten.png?raw=true)
 ![SCREENSHOT](https://github.com/andela-gkuti/Checkpoint-three/blob/develop/asset/update.png?raw=true)
