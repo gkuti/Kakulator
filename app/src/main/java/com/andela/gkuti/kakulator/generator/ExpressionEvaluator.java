@@ -105,11 +105,10 @@ public class ExpressionEvaluator {
     }
 
     /**
-     *
-     * @param operator1 the first String operator
-     * @param operator2 the second String operator
+     * @param operator1     the first String operator
+     * @param operator2     the second String operator
      * @param newExpression list to add new values
-     * @param expression list to pick values from
+     * @param expression    list to pick values from
      * @return new ArrayList of new expression
      */
     private static ArrayList performCalculations(String operator1, String operator2, ArrayList newExpression, ArrayList expression) {
@@ -129,12 +128,12 @@ public class ExpressionEvaluator {
     }
 
     /**
-     *
-     * @param operator operator to remove
-     * @param expression list to pick values from
+     * @param operator      operator to remove
+     * @param expression    list to pick values from
      * @param newExpression list to add new values
      * @return new ArrayList of new expressio
      */
+
     private static ArrayList removeOperator(String operator, ArrayList expression, ArrayList newExpression) {
         int operatorIndex = expression.indexOf(operator);
         double result = eval(expression, operatorIndex, operator, false);
@@ -148,7 +147,6 @@ public class ExpressionEvaluator {
     }
 
     /**
-     *
      * @param operator the String operator
      * @param operand1 the left hand side number
      * @param operand2 the rigth hand side number
