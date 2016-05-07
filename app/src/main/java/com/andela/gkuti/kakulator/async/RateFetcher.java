@@ -112,10 +112,7 @@ public class RateFetcher extends AsyncTask<URL, String, String> {
             if (isJSONValid(finalJson)) {
                 JSONObject parentObject = new JSONObject(finalJson);
                 JSONObject rates = parentObject.getJSONObject("rates");
-                for (String country : rate) {
-                    exchangeRate = rates.getDouble(country);
-                    dataStore.saveRateData(country, exchangeRate.floatValue());
-                }
+                storeResult(rates);
             } else {
                 value = 1;
             }
@@ -130,7 +127,7 @@ public class RateFetcher extends AsyncTask<URL, String, String> {
      * @param text String to test
      * @return
      */
-    public boolean isJSONValid(String text) {
+    private boolean isJSONValid(String text) {
         try {
             new JSONObject(text);
         } catch (JSONException ex) {
@@ -141,5 +138,16 @@ public class RateFetcher extends AsyncTask<URL, String, String> {
             }
         }
         return true;
+    }
+
+    /**
+     * method stores rates into the sharedPreferences file
+     * @param rates json object containing the rates
+     */
+    private void storeResult(JSONObject rates) throws JSONException {
+        for (String country : rate) {
+            exchangeRate = rates.getDouble(country);
+            dataStore.saveRateData(country, exchangeRate.floatValue());
+        }
     }
 }

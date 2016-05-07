@@ -29,10 +29,10 @@ public class ExpressionEvaluator {
     /**
      * reduces the expression
      *
-     * @param express the expression to be reduced
+     * @param expression the expression to be reduced
      */
-    private static void reduce(ArrayList<String> express) {
-        simplify(express, "*", "/");
+    private static void reduce(ArrayList<String> expression) {
+        simplify(expression, "*", "/");
         simplify(result, "+", "-");
     }
 
@@ -130,17 +130,17 @@ public class ExpressionEvaluator {
 
     /**
      *
-     * @param item operator to remove
+     * @param operator operator to remove
      * @param expression list to pick values from
      * @param newExpression list to add new values
      * @return new ArrayList of new expressio
      */
-    private static ArrayList removeOperator(String item, ArrayList expression, ArrayList newExpression) {
-        int operatorIndex = expression.indexOf(item);
-        double result = eval(expression, operatorIndex, item, false);
+    private static ArrayList removeOperator(String operator, ArrayList expression, ArrayList newExpression) {
+        int operatorIndex = expression.indexOf(operator);
+        double result = eval(expression, operatorIndex, operator, false);
         if (operatorIndex > 2) {
             if (expression.get(operatorIndex - 2).equals("-")) {
-                result = eval(expression, operatorIndex, item, true);
+                result = eval(expression, operatorIndex, operator, true);
             }
         }
         newExpression = generateExpression(expression, newExpression, result, operatorIndex);

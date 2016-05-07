@@ -17,7 +17,6 @@ import com.andela.gkuti.kakulator.util.SpinnerHelper;
  * SettingsActivity class
  */
 public class SettingsActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, CompoundButton.OnCheckedChangeListener {
-    private SpinnerHelper spinner;
     private DataStore dataStore;
     private TextView textView;
     private String[] countries;
@@ -40,11 +39,10 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
      * called to initialize spinner and set data source for its adapter
      */
     public void initializeSpinner() {
-        final String[] abbreviations = getResources().getStringArray(R.array.Abbreviations);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(SettingsActivity.this,
                 android.R.layout.simple_spinner_item, countries);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner = new SpinnerHelper(findViewById(R.id.settings_spinner));
+        SpinnerHelper spinner = new SpinnerHelper(findViewById(R.id.settings_spinner));
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(this);
         spinner.setSelection(baseCurrency);

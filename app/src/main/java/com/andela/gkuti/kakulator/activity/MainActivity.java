@@ -8,7 +8,6 @@ import android.view.MenuItem;
 
 import com.andela.gkuti.kakulator.R;
 import com.andela.gkuti.kakulator.dal.DataStore;
-import com.andela.gkuti.kakulator.fragment.MainFragment;
 import com.andela.gkuti.kakulator.util.Network;
 
 /**
@@ -28,7 +27,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        MainFragment mainFragement = new MainFragment();
         initializeComponent();
     }
 
