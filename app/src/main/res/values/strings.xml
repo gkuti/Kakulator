@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Kakulator</string>
     <string name="settings">Settings</string>
+    <string name="top_ten">Top Ten</string>
     <array name="Countries">
         <item>UNITED STATES</item>
         <item>OMAN</item>
@@ -11,6 +12,7 @@
         <item>SWITZERLAND</item>
         <item>BRUNEI</item>
         <item>BAHRAIN</item>
+        <item>NIGERIA</item>
         <item>AUSTRALIA</item>
         <item>AFGHANISTAN</item>
         <item>ARGENTINA</item>
@@ -47,7 +49,6 @@
         <item>TURKEY</item>
         <item>UKRAINE</item>
         <item>SOUTH AFRICA</item>
-        <item>NIGERIA</item>
     </array>
     <array name="Abbreviations">
         <item>USD</item>
@@ -59,6 +60,7 @@
         <item>CHF</item>
         <item>BND</item>
         <item>BHD</item>
+        <item>NGN</item>
         <item>AUD</item>
         <item>AFN</item>
         <item>ARS</item>
@@ -95,6 +97,8 @@
         <item>TRY</item>
         <item>UAH</item>
         <item>ZAR</item>
-        <item>NGN</item>
     </array>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
