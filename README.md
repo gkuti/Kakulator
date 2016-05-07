@@ -4,13 +4,13 @@ A Currency conversion calculator for Android
 ###ABOUT
 *WHAT DOES KAKULATOR DO?*
 
-Kakulator is an application that allows users to perform arithmetic calculation on currency and also ordinary number calculations.
+Kakulator is an application that allows you to perform arithmetic calculation on currency and also ordinary number calculations.
 
 Currency calculations are done in different currencies but the result is displayed in a base currency which the user sets.
 
 Users can also view a list of ten most valuable currency.
 
-The app also mode which you can switch between (Currency or Arithmetic).
+The app also has modes which you can switch between (Currency or Arithmetic).
 
 *SCREENSHOT*
 
