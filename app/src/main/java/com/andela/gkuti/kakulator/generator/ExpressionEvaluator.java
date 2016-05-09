@@ -46,9 +46,9 @@ public class ExpressionEvaluator {
      */
     private static void simplify(ArrayList<String> expression, String operator1, String operator2) {
         ArrayList<String> newExpression = new ArrayList<>();
-        if (isOperatorPresent(operator1,operator2,expression)) {
+        if (isOperatorPresent(operator1, operator2, expression)) {
             result = performCalculations(operator1, operator2, newExpression, expression);
-            if (isOperatorPresent(operator1,operator2,result)) {
+            if (isOperatorPresent(operator1, operator2, result)) {
                 simplify(newExpression, operator1, operator2);
             }
         } else {
@@ -90,7 +90,7 @@ public class ExpressionEvaluator {
      */
     private static ArrayList<String> generateExpression(ArrayList<String> expression, ArrayList<String> newExpression, double result, int operatorIndex) {
         newExpression.remove(newExpression.size() - 1);
-        if (containsNegative(operatorIndex,expression)) {
+        if (containsNegative(operatorIndex, expression)) {
             newExpression.remove(newExpression.size() - 1);
             newExpression.add("+");
         }
@@ -110,7 +110,7 @@ public class ExpressionEvaluator {
         Iterator<String> iterator = expression.iterator();
         while (iterator.hasNext()) {
             String item = iterator.next();
-            if ((item.equals(operator1) || item.equals(operator2)) && reduce == 0) {
+            if (equalsOperator(item, operator1, operator2) && reduce == 0) {
                 newExpression = removeOperator(item, expression, newExpression);
                 reduce = 1;
                 iterator.next();
@@ -131,7 +131,7 @@ public class ExpressionEvaluator {
     private static ArrayList removeOperator(String operator, ArrayList expression, ArrayList newExpression) {
         int operatorIndex = expression.indexOf(operator);
         double result = eval(expression, operatorIndex, operator, false);
-        if (containsNegative(operatorIndex,expression)) {
+        if (containsNegative(operatorIndex, expression)) {
             result = eval(expression, operatorIndex, operator, true);
         }
         newExpression = generateExpression(expression, newExpression, result, operatorIndex);
@@ -165,10 +165,17 @@ public class ExpressionEvaluator {
         }
         return result;
     }
-    public static boolean isOperatorPresent(String operator1,String operator2, ArrayList expression){
+
+    public static boolean isOperatorPresent(String operator1, String operator2, ArrayList expression) {
         return (expression.contains(operator1) || expression.contains(operator2));
     }
-    public static boolean containsNegative(int operatorIndex, ArrayList expression){
+
+    public static boolean containsNegative(int operatorIndex, ArrayList expression) {
         return (operatorIndex > 2 && expression.get(operatorIndex - 2).equals("-"));
     }
+
+    public static boolean equalsOperator(String item, String operator1, String operator2) {
+        return (item.equals(operator1) || item.equals(operator2));
+    }
+
 }
