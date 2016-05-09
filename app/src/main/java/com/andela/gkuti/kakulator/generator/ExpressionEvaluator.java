@@ -46,10 +46,9 @@ public class ExpressionEvaluator {
      */
     private static void simplify(ArrayList<String> expression, String operator1, String operator2) {
         ArrayList<String> newExpression = new ArrayList<>();
-        if (expression.contains(operator1) || expression.contains(operator2)) {
+        if (isOperatorPresent(operator1,operator2,expression)) {
             result = performCalculations(operator1, operator2, newExpression, expression);
-            System.out.println(result);
-            if (result.contains(operator1) || expression.contains(operator2)) {
+            if (isOperatorPresent(operator1,operator2,result)) {
                 simplify(newExpression, operator1, operator2);
             }
         } else {
@@ -91,7 +90,7 @@ public class ExpressionEvaluator {
      */
     private static ArrayList<String> generateExpression(ArrayList<String> expression, ArrayList<String> newExpression, double result, int operatorIndex) {
         newExpression.remove(newExpression.size() - 1);
-        if (operatorIndex > 2 && expression.get(operatorIndex - 2).equals("-")) {
+        if (containsNegative(operatorIndex,expression)) {
             newExpression.remove(newExpression.size() - 1);
             newExpression.add("+");
         }
@@ -132,7 +131,7 @@ public class ExpressionEvaluator {
     private static ArrayList removeOperator(String operator, ArrayList expression, ArrayList newExpression) {
         int operatorIndex = expression.indexOf(operator);
         double result = eval(expression, operatorIndex, operator, false);
-        if (operatorIndex > 2 && expression.get(operatorIndex - 2).equals("-")) {
+        if (containsNegative(operatorIndex,expression)) {
             result = eval(expression, operatorIndex, operator, true);
         }
         newExpression = generateExpression(expression, newExpression, result, operatorIndex);
@@ -165,5 +164,11 @@ public class ExpressionEvaluator {
                 result = operand1 / operand2;
         }
         return result;
+    }
+    public static boolean isOperatorPresent(String operator1,String operator2, ArrayList expression){
+        return (expression.contains(operator1) || expression.contains(operator2));
+    }
+    public static boolean containsNegative(int operatorIndex, ArrayList expression){
+        return (operatorIndex > 2 && expression.get(operatorIndex - 2).equals("-"));
     }
 }
