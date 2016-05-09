@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
         update = dataStore.getData("update");
         appState = dataStore.getData("appState");
         network = new Network(this);
+        network.checkNetwork(update,appState);
     }
 
     /**

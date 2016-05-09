@@ -29,14 +29,10 @@ public class Network {
         ConnectivityManager conMan = (ConnectivityManager) activity.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo.State mobile = conMan.getNetworkInfo(0).getState();
         NetworkInfo.State wifi = conMan.getNetworkInfo(1).getState();
-        if (mobile == NetworkInfo.State.CONNECTED || wifi == NetworkInfo.State.CONNECTED) {
-            if (update == 0) {
-                new RateFetcher(activity).execute();
-            }
-        } else {
-            if (appState == 0) {
-                snackBar.show("Oops! Error fetching conversion rates check your internet connection");
-            }
+        if ((mobile == NetworkInfo.State.CONNECTED || wifi == NetworkInfo.State.CONNECTED) && update == 0) {
+            new RateFetcher(activity).execute();
+        } else if (appState == 0) {
+            snackBar.show("Oops! Error fetching conversion rates check your internet connection");
         }
     }
 }

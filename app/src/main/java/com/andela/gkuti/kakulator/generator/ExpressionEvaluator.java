@@ -44,20 +44,17 @@ public class ExpressionEvaluator {
      * @param operator2  the second String operator
      * @return ArrayList of a simplified expression
      */
-    private static ArrayList<String> simplify(ArrayList<String> expression, String operator1, String operator2) {
+    private static void simplify(ArrayList<String> expression, String operator1, String operator2) {
         ArrayList<String> newExpression = new ArrayList<>();
         if (expression.contains(operator1) || expression.contains(operator2)) {
             result = performCalculations(operator1, operator2, newExpression, expression);
-            if (expression.contains(operator1) || expression.contains(operator2)) {
+            System.out.println(result);
+            if (result.contains(operator1) || expression.contains(operator2)) {
                 simplify(newExpression, operator1, operator2);
-            } else {
-                return result;
             }
         } else {
             result = expression;
-            return result;
         }
-        return null;
     }
 
     /**
@@ -94,11 +91,9 @@ public class ExpressionEvaluator {
      */
     private static ArrayList<String> generateExpression(ArrayList<String> expression, ArrayList<String> newExpression, double result, int operatorIndex) {
         newExpression.remove(newExpression.size() - 1);
-        if (operatorIndex > 2) {
-            if (expression.get(operatorIndex - 2).equals("-")) {
-                newExpression.remove(newExpression.size() - 1);
-                newExpression.add("+");
-            }
+        if (operatorIndex > 2 && expression.get(operatorIndex - 2).equals("-")) {
+            newExpression.remove(newExpression.size() - 1);
+            newExpression.add("+");
         }
         newExpression.add(String.valueOf(result));
         return newExpression;
@@ -137,10 +132,8 @@ public class ExpressionEvaluator {
     private static ArrayList removeOperator(String operator, ArrayList expression, ArrayList newExpression) {
         int operatorIndex = expression.indexOf(operator);
         double result = eval(expression, operatorIndex, operator, false);
-        if (operatorIndex > 2) {
-            if (expression.get(operatorIndex - 2).equals("-")) {
-                result = eval(expression, operatorIndex, operator, true);
-            }
+        if (operatorIndex > 2 && expression.get(operatorIndex - 2).equals("-")) {
+            result = eval(expression, operatorIndex, operator, true);
         }
         newExpression = generateExpression(expression, newExpression, result, operatorIndex);
         return newExpression;

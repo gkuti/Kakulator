@@ -1,9 +1,9 @@
 package com.andela.gkuti.kakulator.util;
 
 import android.app.Activity;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.view.View;
+import android.widget.RelativeLayout;
 
 import com.andela.gkuti.kakulator.R;
 
@@ -15,8 +15,8 @@ public class SnackBar {
     }
 
     public void show(String message) {
-        CoordinatorLayout coordinatorLayout = (CoordinatorLayout) activity.findViewById(R.id.calculator_layout);
-        Snackbar snackbar = Snackbar.make(coordinatorLayout, message, Snackbar.LENGTH_INDEFINITE)
+        RelativeLayout relativeLayout = (RelativeLayout) activity.findViewById(R.id.main_activity);
+        Snackbar snackbar = Snackbar.make(relativeLayout, message, Snackbar.LENGTH_INDEFINITE)
                 .setAction("EXIT", new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
