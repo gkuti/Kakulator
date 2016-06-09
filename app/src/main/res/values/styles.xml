@@ -7,10 +7,13 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
-    <style name="MyButton" parent="Theme.AppCompat.Light.DarkActionBar">
-        <item name="colorControlHighlight">@color/Orange</item>
+    <style name="GreenButton" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorControlHighlight">@color/Ash</item>
         <item name="colorButtonNormal">@color/colorPrimary</item>
 
+    </style>
+    <style name="WhiteButton" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorControlHighlight">@color/colorPrimary</item>
     </style>
 
 </resources>

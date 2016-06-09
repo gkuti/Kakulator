@@ -16,15 +16,16 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private Spinner spinner;
     private Button add, minus, times, equals, point, clear, divide;
     private TextView input, result;
-    private StringBuffer input_Buffer;
+    private StringBuffer inputBuffer, expressionBuffer;
     private String valueString = "", lastResult = "";
     private String currency, operation;
-    private boolean continuedValue = false, previousCalculations = false;
+    private boolean continuedValue = false;
     private RateFetcher rateFetcher;
     private String[] abbreviations;
     private Double value, exchangedValue, finalResult = 0.0;
-    private boolean calculations = false, firstOperation = true, pendingOperation = false;
+    private boolean firstOperation = true;
     private DataStore dataStore;
+    private int baseCurrency, update;
     private boolean isInputEntered = false;
 
     @Override
@@ -32,7 +33,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initializeComponent();
-        rateFetcher.execute();
+        if (update == 0) {
+            rateFetcher.execute();
+        }
     }
 
     @Override
@@ -68,20 +71,23 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         divide = (Button) findViewById(R.id.operation_divide);
         input = (TextView) findViewById(R.id.tv_input);
         result = (TextView) findViewById(R.id.tv_result);
-        input_Buffer = new StringBuffer();
+        inputBuffer = new StringBuffer();
+        expressionBuffer = new StringBuffer();
         rateFetcher = new RateFetcher(this);
         currency = "USD";
         dataStore = new DataStore(this);
+        baseCurrency = dataStore.getData("baseCurrency");
+        update = dataStore.getData("update");
     }
 
     public void numClick(View view) {
         TextView textView = (TextView) view;
         isInputEntered = true;
         if (!continuedValue) {
-            input_Buffer.append(currency + textView.getText());
+            inputBuffer.append(currency + textView.getText());
             continuedValue = true;
         } else {
-            input_Buffer.append(textView.getText());
+            inputBuffer.append(textView.getText());
         }
         valueString += textView.getText();
         lastResult += textView.getText();
@@ -89,6 +95,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     }
 
     public void operationClick(View view) {
+        parseValue();
         int viewId = view.getId();
         switch (viewId) {
             case R.id.operation_add:
@@ -110,17 +117,20 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             case R.id.operation_clear:
                 break;
         }
-        parseValue();
         if (viewId == R.id.operation_equals) {
-            result.setText(finalResult.toString());
+            finalResult = ExpressionEvaluator.evaluate(expressionBuffer.toString());
+            result.setText(String.valueOf(dataStore.getRateData(abbreviations[baseCurrency]) * finalResult));
             lastResult = currency + finalResult.toString();
+            expressionBuffer = new StringBuffer();
+            expressionBuffer.append(finalResult.toString());
         }
     }
 
     private void parseValue() {
         if (!valueString.equals("")) {
             value = Double.parseDouble(valueString);
-            exchangedValue = value / Double.valueOf(dataStore.getRateData(currency));
+            exchangedValue = (value / dataStore.getRateData(currency));
+            expressionBuffer.append(exchangedValue.toString());
             if (firstOperation) {
                 finalResult = exchangedValue;
                 restartOperation();
@@ -171,19 +181,17 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     }
 
     private void restartOperation() {
-        previousCalculations = true;
         valueString = "";
         lastResult = "";
     }
 
     private void setOperation(String operation) {
         this.operation = operation;
-        pendingOperation = true;
         continuedValue = false;
     }
 
     public void displayText() {
-        input.setText(input_Buffer.toString());
+        input.setText(inputBuffer.toString());
         if (input.getLineCount() == 2) {
             input.setTextSize(20);
         }
@@ -191,11 +199,12 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     private void displayOperation(String operation) {
         if (isInputEntered) {
-            int indexOfLastChar = input_Buffer.length();
-            if (String.valueOf(input_Buffer.charAt(indexOfLastChar - 1)).equals(" ")) {
-                input_Buffer.replace(indexOfLastChar - 2, indexOfLastChar - 1, operation);
+            int indexOfLastChar = inputBuffer.length();
+            if (String.valueOf(inputBuffer.charAt(indexOfLastChar - 1)).equals(" ")) {
+                inputBuffer.replace(indexOfLastChar - 2, indexOfLastChar - 1, operation);
             } else {
-                input_Buffer.append(" " + operation + " ");
+                inputBuffer.append(" " + operation + " ");
+                expressionBuffer.append(" " + operation + " ");
             }
             displayText();
         }
